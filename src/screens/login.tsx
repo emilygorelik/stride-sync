@@ -1,3 +1,5 @@
+import { SubmitButton } from './components/SubmitButton';
+
 function Login() {
   return (
     <div className="flex bg-purple-700 w-[100vw] h-[100vh] justify-center items-center">
@@ -6,9 +8,7 @@ function Login() {
         <p className="italic p-4">
           The perfect playlist <br /> for your next run
         </p>
-        <button className="btn bg-spotify text-white border-none rounded-full text-lg">
-          login with spotify
-        </button>
+        <SubmitButton text={'login with spotify'}></SubmitButton>
       </div>
     </div>
   );
