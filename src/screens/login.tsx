@@ -1,4 +1,4 @@
-import { SubmitButton } from './components/SubmitButton';
+import { SubmitButton } from '../components/SubmitButton';
 
 function Login() {
   return (
