@@ -8,7 +8,9 @@ function Login() {
         <p className="italic p-4 w-3/4">
           The perfect playlist for your next run
         </p>
-        <SubmitButton>Login with Spotify</SubmitButton>
+        <SubmitButton onClick={() => console.log('clicked')}>
+          Login with Spotify
+        </SubmitButton>
       </div>
     </div>
   );
