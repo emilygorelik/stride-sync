@@ -1,11 +1,13 @@
+import { ReactNode } from 'react';
+
 interface SubmitButtonProps {
-  text: string;
+  children: ReactNode;
 }
 
-export function SubmitButton({ text }: SubmitButtonProps) {
+export function SubmitButton({ children }: SubmitButtonProps) {
   return (
     <button className="btn bg-spotify text-white border-none rounded-full text-lg">
-      {text}
+      {children}
     </button>
   );
 }

@@ -8,7 +8,7 @@ function Login() {
         <p className="italic p-4">
           The perfect playlist <br /> for your next run
         </p>
-        <SubmitButton text={'login with spotify'}></SubmitButton>
+        <SubmitButton>Login with Spotify</SubmitButton>
       </div>
     </div>
   );
