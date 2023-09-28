@@ -60,7 +60,7 @@ export async function getAccessToken(
   return access_token;
 }
 
-async function fetchProfile(token: string): Promise<any> {
+export async function fetchProfile(token: string): Promise<any> {
   const result = await fetch('https://api.spotify.com/v1/me', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}` },
@@ -101,13 +101,9 @@ export function UserTokenProvider({ children }: { children: ReactNode }) {
     if (!code) {
       redirectToAuthCodeFlow(clientId);
     } else {
-      try {
-        let access = await getAccessToken(clientId, code);
-        setAccessToken(access);
-        console.log(access);
-      } catch (err) {
-        console.log('casey ', err);
-      }
+      let access = await getAccessToken(clientId, code);
+      console.log('ACCESS', access);
+      if (access) setAccessToken(access);
     }
   }
 

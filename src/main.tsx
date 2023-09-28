@@ -5,6 +5,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './screens/login';
 import Callback from './screens/callback';
 import { UserTokenProvider } from './scripts/api';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -19,8 +22,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <UserTokenProvider>
-      <RouterProvider router={router} />
-    </UserTokenProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserTokenProvider>
+        <RouterProvider router={router} />
+      </UserTokenProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
 );
