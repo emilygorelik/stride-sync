@@ -9,7 +9,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
   const params = new URLSearchParams();
   params.append('client_id', clientId);
   params.append('response_type', 'code');
-  params.append('redirect_uri', 'http://localhost:5173/home');
+  params.append('redirect_uri', 'http://localhost:5173/callback');
   params.append('scope', 'user-read-private user-read-email');
   params.append('code_challenge_method', 'S256');
   params.append('code_challenge', challenge);
@@ -47,7 +47,7 @@ export async function getAccessToken(
   params.append('client_id', clientId);
   params.append('grant_type', 'authorization_code');
   params.append('code', code);
-  params.append('redirect_uri', 'http://localhost:5173/home');
+  params.append('redirect_uri', 'http://localhost:5173/callback');
   params.append('code_verifier', verifier!);
 
   const result = await fetch('https://accounts.spotify.com/api/token', {
@@ -81,7 +81,7 @@ async function fetchPlaylists(token: string): Promise<any> {
 
 type UserTokenContextType = {
   accessToken: string;
-  loginWithSpotify: VoidFunction;
+  loginWithSpotify: (code?: string) => void;
 };
 
 export const UserTokenContext = createContext<UserTokenContextType>({
@@ -92,18 +92,22 @@ export const UserTokenContext = createContext<UserTokenContextType>({
 export function UserTokenProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string>('');
 
-  async function loginWithSpotify() {
+  async function loginWithSpotify(code?: string) {
     const clientId = '22817a9b16a140d1a9f37f3cceaa1712'; // Replace with your client id
-    const params = new URLSearchParams(window.location.search);
 
-    const code = params.get('code');
+    console.log(code);
+    console.log('hi ethan');
+
     if (!code) {
-      console.log('testing 2');
-
       redirectToAuthCodeFlow(clientId);
     } else {
-      console.log('testing 1');
-      setAccessToken(await getAccessToken(clientId, code));
+      try {
+        let access = await getAccessToken(clientId, code);
+        setAccessToken(access);
+        console.log(access);
+      } catch (err) {
+        console.log('casey ', err);
+      }
     }
   }
 
