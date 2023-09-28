@@ -1,5 +1,5 @@
 import { SubmitButton } from '../components/SubmitButton';
-import { NavLink } from 'react-router-dom';
+import { loginWithSpotify } from '../scripts/api';
 
 function Login() {
   return (
@@ -9,8 +9,8 @@ function Login() {
         <p className="italic p-4 w-3/4">
           The perfect playlist for your next run
         </p>
-        <SubmitButton onClick={() => console.log('clicked')}>
-          <NavLink to="/home">Login with Spotify</NavLink>
+        <SubmitButton onClick={() => loginWithSpotify()}>
+          Login with Spotify
         </SubmitButton>
       </div>
     </div>
