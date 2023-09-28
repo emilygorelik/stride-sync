@@ -5,8 +5,12 @@ export default {
     extend: {
       colors: {
         spotify: '#1db954',
+        'spotify-accent': '#127836',
       },
     },
+  },
+  daisyui: {
+    themes: ['night'],
   },
   plugins: [require('daisyui')],
 };
