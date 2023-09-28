@@ -1,18 +1,4 @@
-let profile: any, playlists: any;
-
-export async function loginWithSpotify() {
-  const clientId = '22817a9b16a140d1a9f37f3cceaa1712'; // Replace with your client id
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get('code');
-
-  if (!code) {
-    redirectToAuthCodeFlow(clientId);
-  } else {
-    const accessToken = await getAccessToken(clientId, code);
-    profile = await fetchProfile(accessToken);
-    playlists = await fetchPlaylists(accessToken);
-  }
-}
+import { ReactNode, createContext, useState } from 'react';
 
 export async function redirectToAuthCodeFlow(clientId: string) {
   const verifier = generateCodeVerifier(128);
@@ -91,4 +77,44 @@ async function fetchPlaylists(token: string): Promise<any> {
   });
 
   return await result.json();
+}
+
+type UserTokenContextType = {
+  accessToken: string;
+  loginWithSpotify: VoidFunction;
+};
+
+export const UserTokenContext = createContext<UserTokenContextType>({
+  accessToken: '',
+  loginWithSpotify: () => {},
+});
+
+export function UserTokenProvider({ children }: { children: ReactNode }) {
+  const [accessToken, setAccessToken] = useState<string>('');
+
+  async function loginWithSpotify() {
+    const clientId = '22817a9b16a140d1a9f37f3cceaa1712'; // Replace with your client id
+    const params = new URLSearchParams(window.location.search);
+
+    const code = params.get('code');
+    if (!code) {
+      console.log('testing 2');
+
+      redirectToAuthCodeFlow(clientId);
+    } else {
+      console.log('testing 1');
+      setAccessToken(await getAccessToken(clientId, code));
+    }
+  }
+
+  const value: UserTokenContextType = {
+    accessToken,
+    loginWithSpotify,
+  };
+
+  return (
+    <UserTokenContext.Provider value={value}>
+      {children}
+    </UserTokenContext.Provider>
+  );
 }
