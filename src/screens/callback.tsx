@@ -10,7 +10,7 @@ function Callback() {
   const [user, setUser] = useState([]);
   const { isLoading } = useQuery(
     ['taskLists'],
-    () => fetchProfile(accessToken),
+    async () => await fetchProfile(accessToken),
     {
       onSuccess: (user) => {
         setUser(user);

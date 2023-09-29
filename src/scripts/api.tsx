@@ -95,9 +95,6 @@ export function UserTokenProvider({ children }: { children: ReactNode }) {
   async function loginWithSpotify(code?: string) {
     const clientId = '22817a9b16a140d1a9f37f3cceaa1712'; // Replace with your client id
 
-    console.log(code);
-    console.log('hi ethan');
-
     if (!code) {
       redirectToAuthCodeFlow(clientId);
     } else {
