@@ -1,18 +1,4 @@
-let profile: any, playlists: any;
-
-export async function loginWithSpotify() {
-  const clientId = '22817a9b16a140d1a9f37f3cceaa1712'; // Replace with your client id
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get('code');
-
-  if (!code) {
-    redirectToAuthCodeFlow(clientId);
-  } else {
-    const accessToken = await getAccessToken(clientId, code);
-    profile = await fetchProfile(accessToken);
-    playlists = await fetchPlaylists(accessToken);
-  }
-}
+import { ReactNode, createContext, useState } from 'react';
 
 export async function redirectToAuthCodeFlow(clientId: string) {
   const verifier = generateCodeVerifier(128);
@@ -23,7 +9,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
   const params = new URLSearchParams();
   params.append('client_id', clientId);
   params.append('response_type', 'code');
-  params.append('redirect_uri', 'http://localhost:5173/home');
+  params.append('redirect_uri', 'http://localhost:5173/callback');
   params.append('scope', 'user-read-private user-read-email');
   params.append('code_challenge_method', 'S256');
   params.append('code_challenge', challenge);
@@ -61,7 +47,7 @@ export async function getAccessToken(
   params.append('client_id', clientId);
   params.append('grant_type', 'authorization_code');
   params.append('code', code);
-  params.append('redirect_uri', 'http://localhost:5173/home');
+  params.append('redirect_uri', 'http://localhost:5173/callback');
   params.append('code_verifier', verifier!);
 
   const result = await fetch('https://accounts.spotify.com/api/token', {
@@ -74,7 +60,7 @@ export async function getAccessToken(
   return access_token;
 }
 
-async function fetchProfile(token: string): Promise<any> {
+export async function fetchProfile(token: string): Promise<any> {
   const result = await fetch('https://api.spotify.com/v1/me', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}` },
@@ -91,4 +77,41 @@ async function fetchPlaylists(token: string): Promise<any> {
   });
 
   return await result.json();
+}
+
+type UserTokenContextType = {
+  accessToken: string;
+  loginWithSpotify: (code?: string) => void;
+};
+
+export const UserTokenContext = createContext<UserTokenContextType>({
+  accessToken: '',
+  loginWithSpotify: () => {},
+});
+
+export function UserTokenProvider({ children }: { children: ReactNode }) {
+  const [accessToken, setAccessToken] = useState<string>('');
+
+  async function loginWithSpotify(code?: string) {
+    const clientId = '22817a9b16a140d1a9f37f3cceaa1712'; // Replace with your client id
+
+    if (!code) {
+      redirectToAuthCodeFlow(clientId);
+    } else {
+      let access = await getAccessToken(clientId, code);
+      console.log('ACCESS', access);
+      if (access) setAccessToken(access);
+    }
+  }
+
+  const value: UserTokenContextType = {
+    accessToken,
+    loginWithSpotify,
+  };
+
+  return (
+    <UserTokenContext.Provider value={value}>
+      {children}
+    </UserTokenContext.Provider>
+  );
 }
