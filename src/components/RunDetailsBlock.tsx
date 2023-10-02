@@ -3,7 +3,7 @@ import { RadioGroup } from './RadioGroup';
 import { TextInput } from './TextInput';
 import { TimeInput } from './TimeInput';
 
-export function DetailsBlock() {
+export function RunDetailsBlock() {
   return (
     <div className="flex w-full flex-col ">
       <h3>Run Details</h3>
