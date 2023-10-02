@@ -1,5 +1,6 @@
 import { Divider } from './Divider';
 import { RadioGroup } from './RadioGroup';
+import { TextInput } from './TextInput';
 import { TimeInput } from './TimeInput';
 
 export function DetailsBlock() {
@@ -18,11 +19,7 @@ export function DetailsBlock() {
         <Divider></Divider>
         <div className="form-control w-fit">
           <span className="label-text">Distance</span>
-          <input
-            type="text"
-            placeholder="Type here"
-            className="input input-sm bg-white w-full max-w-xs"
-          />
+          <TextInput labelBottom="&nbsp;" dummyText="00.00" />
           <RadioGroup options={['miles', 'kilometers']} groupName="distance" />
         </div>
         <div className="form-control w-fit ml-6">
