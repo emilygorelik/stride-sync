@@ -46,7 +46,7 @@ function Callback() {
   );
 
   if (isLoading) {
-    return <></>;
+    return <>loading</>;
   }
   if (code && !accessToken) {
     loginWithSpotify(code);
@@ -57,7 +57,7 @@ function Callback() {
     );
   }
 
-  console.log(user);
+  console.log('user ', user);
 
   return (
     <div className="flex flex-col h-screen justify-center items-center">
