@@ -4,6 +4,7 @@ import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './screens/login';
 import Callback from './screens/callback';
+import Home from './screens/home';
 import { UserTokenProvider } from './scripts/api';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: '/callback',
     element: <Callback />,
+  },
+  {
+    path: '/home',
+    element: <Home />,
   },
 ]);
 
