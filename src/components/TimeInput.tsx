@@ -11,7 +11,11 @@ export function TimeInput({ hours, minutes, seconds }: TimeInputProps) {
       {hours && (
         <>
           <div className="form-control">
-            <TextInput labelBottom="hr" dummyText="00" addClass="w-16" />
+            <TextInput
+              labelBottom="hr"
+              dummyText="00"
+              addClass="max-w-[4rem]"
+            />
           </div>
           <h3>&nbsp;:&nbsp;</h3>
         </>
@@ -19,14 +23,18 @@ export function TimeInput({ hours, minutes, seconds }: TimeInputProps) {
       {minutes && (
         <>
           <div className="form-control">
-            <TextInput labelBottom="min" dummyText="00" addClass="w-16" />
+            <TextInput
+              labelBottom="min"
+              dummyText="00"
+              addClass="max-w-[4rem]"
+            />
           </div>
           <h3>&nbsp;:&nbsp;</h3>
         </>
       )}
       {seconds && (
         <div className="form-control">
-          <TextInput labelBottom="sec" dummyText="00" addClass="w-16" />
+          <TextInput labelBottom="sec" dummyText="00" addClass="max-w-[4rem]" />
         </div>
       )}
     </div>
