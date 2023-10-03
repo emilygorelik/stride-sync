@@ -57,7 +57,15 @@ export async function getAccessToken(
   });
 
   const { access_token } = await result.json();
+  if (access_token != undefined) {
+    localStorage.setItem('accessToken', access_token); // Store the access token in localStorage
+  }
   return access_token;
+}
+
+export async function checkStoredAccessToken(): Promise<string | null> {
+  const storedAccessToken = localStorage.getItem('accessToken');
+  return storedAccessToken;
 }
 
 export async function fetchProfile(token: string): Promise<any> {
@@ -65,16 +73,18 @@ export async function fetchProfile(token: string): Promise<any> {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}` },
   });
-  console.log(result);
 
   return await result.json();
 }
 
-async function fetchPlaylists(token: string): Promise<any> {
-  const result = await fetch('https://api.spotify.com/v1/me/playlists', {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export async function fetchPlaylists(token: string): Promise<any> {
+  const result = await fetch(
+    'https://api.spotify.com/v1/me/playlists?limit=50&offset=0',
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
 
   return await result.json();
 }
@@ -93,7 +103,7 @@ export function UserTokenProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string>('');
 
   async function loginWithSpotify(code?: string) {
-    const clientId = '22817a9b16a140d1a9f37f3cceaa1712'; // Replace with your client id
+    const clientId = '22817a9b16a140d1a9f37f3cceaa1712'; // my unique client id from spotify dashboard
 
     if (!code) {
       redirectToAuthCodeFlow(clientId);
