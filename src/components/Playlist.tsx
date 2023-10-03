@@ -1,6 +1,6 @@
 export function Playlist() {
   return (
-    <div className="flex w-full border-2">
+    <div className="flex w-full">
       <div className="w-1/6">
         <img
           src="https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228"
