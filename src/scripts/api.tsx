@@ -77,11 +77,14 @@ export async function fetchProfile(token: string): Promise<any> {
   return await result.json();
 }
 
-async function fetchPlaylists(token: string): Promise<any> {
-  const result = await fetch('https://api.spotify.com/v1/me/playlists', {
-    method: 'GET',
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export async function fetchPlaylists(token: string): Promise<any> {
+  const result = await fetch(
+    'https://api.spotify.com/v1/me/playlists?limit=50&offset=0',
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
 
   return await result.json();
 }

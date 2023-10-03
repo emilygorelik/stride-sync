@@ -5,7 +5,11 @@ import { RunDetailsBlock } from '../components/RunDetailsBlock';
 import { StrideDetailsBlock } from '../components/StrideDetailsBlock';
 import { SubmitButton } from '../components/SubmitButton';
 import { useEffect, useState } from 'react';
-import { fetchProfile, checkStoredAccessToken } from '../scripts/api';
+import {
+  fetchProfile,
+  fetchPlaylists,
+  checkStoredAccessToken,
+} from '../scripts/api';
 
 interface SpotifyProfile {
   country: string;
@@ -37,7 +41,8 @@ interface SpotifyProfile {
 function Home() {
   const navigate = useNavigate();
   const [accessToken, setAccessToken] = useState<string>('inital');
-  const [profile, setProfile] = useState<SpotifyProfile>(null); // Use appropriate type for your profile data
+  const [profile, setProfile] = useState<SpotifyProfile>();
+  const [playlists, setPlaylists] = useState<any>();
 
   useEffect(() => {
     navigate('/home');
@@ -76,9 +81,28 @@ function Home() {
     fetchUserProfile();
   }, [accessToken]);
 
+  useEffect(() => {
+    async function fetchUserPlaylists() {
+      if (accessToken) {
+        try {
+          const userProfile = await fetchPlaylists(accessToken);
+          setPlaylists(userProfile);
+        } catch (error) {
+          // Handle errors from the API call, e.g., token expired or invalid
+          console.error('Error fetching user playlists:', error);
+        }
+      }
+    }
+
+    fetchUserPlaylists();
+  }, [accessToken]);
+
   if (!profile) {
     return <div>Loading...</div>; // Or any loading indicator while fetching the profile data
   }
+
+  console.log('--------------------------');
+  console.log(playlists);
 
   return (
     <div className="flex w-3/4 h-screen m-auto p-8 flex-col items-center">
