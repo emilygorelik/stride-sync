@@ -93,7 +93,7 @@ export function UserTokenProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string>('');
 
   async function loginWithSpotify(code?: string) {
-    const clientId = '22817a9b16a140d1a9f37f3cceaa1712'; // Replace with your client id
+    const clientId = '22817a9b16a140d1a9f37f3cceaa1712'; // my unique client id from spotify dashboard
 
     if (!code) {
       redirectToAuthCodeFlow(clientId);
