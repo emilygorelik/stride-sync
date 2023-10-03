@@ -1,10 +1,16 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { SubmitButton } from '../components/SubmitButton';
 import { UserTokenContext } from '../scripts/api';
 import { Card } from '../components/Card';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const { loginWithSpotify } = useContext(UserTokenContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate('/');
+  }, []);
 
   return (
     <div className="flex h-screen justify-center items-center">

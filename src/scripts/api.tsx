@@ -57,7 +57,15 @@ export async function getAccessToken(
   });
 
   const { access_token } = await result.json();
+  if (access_token != undefined) {
+    localStorage.setItem('accessToken', access_token); // Store the access token in localStorage
+  }
   return access_token;
+}
+
+export async function checkStoredAccessToken(): Promise<string | null> {
+  const storedAccessToken = localStorage.getItem('accessToken');
+  return storedAccessToken;
 }
 
 export async function fetchProfile(token: string): Promise<any> {
@@ -65,7 +73,6 @@ export async function fetchProfile(token: string): Promise<any> {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}` },
   });
-  console.log(result);
 
   return await result.json();
 }
