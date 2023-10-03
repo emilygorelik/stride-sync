@@ -33,31 +33,34 @@ interface SpotifyUser {
 function Callback() {
   const [searchParams] = useSearchParams();
   const { loginWithSpotify, accessToken } = useContext(UserTokenContext);
-  const code = searchParams.get('code');
-  const [user, setUser] = useState<SpotifyUser[]>();
-  const { isLoading } = useQuery(
-    ['taskLists'],
-    async () => await fetchProfile(accessToken),
-    {
-      onSuccess: (user) => {
-        setUser(user);
-      },
+  const [user, setUser] = useState<SpotifyUser>();
+
+  const {
+    isLoading,
+    data: userData,
+    error,
+  } = useQuery(['taskLists'], async () => await fetchProfile(accessToken), {
+    enabled: !!accessToken,
+    onSuccess: (data) => {
+      setUser(data);
     },
-  );
+  });
 
   if (isLoading) {
-    return <>loading</>;
-  }
-  if (code && !accessToken) {
-    loginWithSpotify(code);
-    return (
-      <div className="flex flex-col h-screen justify-center items-center">
-        Home Page WIP
-      </div>
-    );
+    return <>Loading...</>;
   }
 
-  console.log('user ', user);
+  if (error) {
+    return <>Error loading user data.</>; // Handle error loading user data
+  }
+
+  if (!accessToken) {
+    const code = searchParams.get('code');
+    if (code) {
+      loginWithSpotify(code);
+    }
+    return null; // Don't render anything if there's no accessToken
+  }
 
   return (
     <div className="flex flex-col h-screen justify-center items-center">
