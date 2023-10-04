@@ -9,39 +9,12 @@ import { SubmitButton } from '../components/SubmitButton';
 import { SpotifyPlaylists } from '../types/spotifyPlaylists';
 import { SpotifyProfile } from '../types/spotifyProfile';
 
-// const DEFAULT_TOKEN: string = 'default'
-
 function Home() {
   const navigate = useNavigate();
   const { accessToken } = useContext(UserTokenContext);
   //const [accessToken, setAccessToken] = useState<string>(DEFAULT_TOKEN);
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
-
-  /*
-  useEffect(() => {
-    navigate('/home');
-  }, []);
-  */
-
-  /*
-  useEffect(() => {
-    async function initializeAccessToken() {
-      const storedAccessToken = await checkStoredAccessToken();
-
-      if (storedAccessToken) {
-        setAccessToken(storedAccessToken);
-        console.log('we have an access token ', storedAccessToken);
-      } else {
-        console.log('access token not received');
-        navigate('/');
-        return;
-      }
-    }
-
-    initializeAccessToken();
-  }, [navigate]);
-  */
 
   useEffect(() => {
     async function fetchUserData() {
@@ -56,13 +29,12 @@ function Home() {
           console.error('Error fetching user data:', error);
         }
       } else {
-        navigate("/")
+        navigate('/');
       }
     }
 
     fetchUserData();
   }, [accessToken]);
-
 
   if (!profile || !playlists) {
     return <div>Loading...</div>;
