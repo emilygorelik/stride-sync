@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { UserTokenContext } from '../scripts/api';
+import { UserTokenContext } from '../api';
 import Home from './home';
 import Login from './login';
 

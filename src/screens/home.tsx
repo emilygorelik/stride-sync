@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { checkStoredAccessToken, fetchPlaylists, fetchProfile } from '../api';
 import { Card } from '../components/Card';
 import { Playlist } from '../components/Playlist';
 import { RunDetailsBlock } from '../components/RunDetailsBlock';
 import { StrideDetailsBlock } from '../components/StrideDetailsBlock';
 import { SubmitButton } from '../components/SubmitButton';
-import {
-  checkStoredAccessToken,
-  fetchPlaylists,
-  fetchProfile,
-} from '../scripts/api';
 import { SpotifyPlaylists } from '../types/spotifyPlaylists';
 import { SpotifyProfile } from '../types/spotifyProfile';
 

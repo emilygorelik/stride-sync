@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { UserTokenProvider } from './api';
 import './index.css';
 import Callback from './screens/callback';
 import Home from './screens/home';
 import Login from './screens/login';
-import { UserTokenProvider } from './scripts/api';
 
 const queryClient = new QueryClient();
 

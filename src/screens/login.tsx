@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserTokenContext } from '../api';
 import { Card } from '../components/Card';
 import { SubmitButton } from '../components/SubmitButton';
-import { UserTokenContext } from '../scripts/api';
 
 function Login() {
   const { loginWithSpotify } = useContext(UserTokenContext);
