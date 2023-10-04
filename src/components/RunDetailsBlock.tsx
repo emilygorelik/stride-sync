@@ -10,13 +10,13 @@ export function RunDetailsBlock() {
       <div className="flex">
         <div className="form-control w-fit">
           <span className="label-text">Pace</span>
-          <TimeInput minutes seconds></TimeInput>
+          <TimeInput minutes seconds />
           <RadioGroup
             options={['minutes per mile', 'minutes per km']}
             groupName="pace"
           />
         </div>
-        <Divider></Divider>
+        <Divider />
         <div className="form-control w-fit">
           <span className="label-text">Distance</span>
           <TextInput labelBottom="&nbsp;" dummyText="00.00" />
@@ -24,7 +24,7 @@ export function RunDetailsBlock() {
         </div>
         <div className="form-control ml-6 w-fit">
           <span className="label-text">Time</span>
-          <TimeInput hours minutes seconds></TimeInput>
+          <TimeInput hours minutes seconds />
         </div>
       </div>
     </div>

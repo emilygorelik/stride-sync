@@ -12,7 +12,7 @@ export function StrideDetailsBlock() {
           <TextInput dummyText="00.00" />
           <RadioGroup options={['inches', 'centimeters']} groupName="stride" />
         </div>
-        <Divider></Divider>
+        <Divider />
         <div className="form-control w-fit">
           <span className="label-text">Height</span>
           <TextInput dummyText="00.00" />
