@@ -13,7 +13,7 @@ export function RadioGroup({ options, groupName }: RadioGroupProps) {
   };
 
   return (
-    <div className="form-control my-2 gap-2 w-fit">
+    <div className="form-control my-2 w-fit gap-2">
       {options.map((option, index) => (
         <label className="flex cursor-pointer justify-start" key={index}>
           <input

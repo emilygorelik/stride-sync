@@ -22,7 +22,7 @@ export function RunDetailsBlock() {
           <TextInput labelBottom="&nbsp;" dummyText="00.00" />
           <RadioGroup options={['miles', 'kilometers']} groupName="distance" />
         </div>
-        <div className="form-control w-fit ml-6">
+        <div className="form-control ml-6 w-fit">
           <span className="label-text">Time</span>
           <TimeInput hours minutes seconds></TimeInput>
         </div>

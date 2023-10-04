@@ -8,7 +8,7 @@ interface SubmitButtonProps {
 export function SubmitButton({ onClick, children }: SubmitButtonProps) {
   return (
     <button
-      className="btn bg-spotify text-black border-none rounded-full text-lg hover:bg-spotify-accent"
+      className="btn rounded-full border-none bg-spotify text-lg text-black hover:bg-spotify-accent"
       onClick={onClick}
     >
       {children}
