@@ -1,8 +1,8 @@
 import { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Card } from '../components/Card';
 import { SubmitButton } from '../components/SubmitButton';
 import { UserTokenContext } from '../scripts/api';
-import { Card } from '../components/Card';
-import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const { loginWithSpotify } = useContext(UserTokenContext);
@@ -13,10 +13,10 @@ function Login() {
   }, []);
 
   return (
-    <div className="flex h-screen justify-center items-center">
+    <div className="flex h-screen items-center justify-center">
       <Card>
         <h2>Spotify StrideSync</h2>
-        <p className="italic p-4 w-3/4 m-auto text-gray-400">
+        <p className="m-auto w-3/4 p-4 italic text-gray-400">
           The perfect playlist for your next run
         </p>
         <SubmitButton onClick={() => loginWithSpotify()}>

@@ -7,7 +7,7 @@ interface CardProps {
 export function Card({ addClass, children }: CardProps) {
   return (
     <div
-      className={`"flex flex-col bg-white p-6 rounded-2xl text-center items-center drop-shadow-xl" ${addClass}`}
+      className={`"flex drop-shadow-xl" flex-col items-center rounded-2xl bg-white p-6 text-center ${addClass}`}
     >
       {children}
     </div>

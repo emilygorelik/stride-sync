@@ -10,8 +10,8 @@ export function Playlist({ name, imageURL, numTracks }: PlaylistProps) {
       <div className="w-1/6">
         <img src={imageURL} alt="" />
       </div>
-      <div className="flex flex-col text-left pl-4 w-5/6">
-        <h3 className="text-black overflow-hidden overflow-ellipsis whitespace-nowrap">
+      <div className="flex w-5/6 flex-col pl-4 text-left">
+        <h3 className="overflow-hidden overflow-ellipsis whitespace-nowrap text-black">
           {name}
         </h3>
         <h4 className="text-gray-400">{numTracks} tracks</h4>

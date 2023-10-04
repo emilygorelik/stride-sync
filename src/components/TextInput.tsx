@@ -18,7 +18,7 @@ export function TextInput({
       <input
         type="text"
         placeholder={dummyText}
-        className={`"input input-sm bg-white text-black rounded-lg w-full max-w-[8rem] focus:outline-none" ${addClass}`}
+        className={`"input focus:outline-none" input-sm w-full max-w-[8rem] rounded-lg bg-white text-black ${addClass}`}
       />
       <span className="label-text">{labelBottom}</span>
     </div>

@@ -1,17 +1,17 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '../components/Card';
 import { Playlist } from '../components/Playlist';
 import { RunDetailsBlock } from '../components/RunDetailsBlock';
 import { StrideDetailsBlock } from '../components/StrideDetailsBlock';
 import { SubmitButton } from '../components/SubmitButton';
-import { useEffect, useState } from 'react';
 import {
-  fetchProfile,
-  fetchPlaylists,
   checkStoredAccessToken,
+  fetchPlaylists,
+  fetchProfile,
 } from '../scripts/api';
-import { SpotifyProfile } from '../types/spotifyProfile';
 import { SpotifyPlaylists } from '../types/spotifyPlaylists';
+import { SpotifyProfile } from '../types/spotifyProfile';
 
 function Home() {
   const navigate = useNavigate();
@@ -77,14 +77,14 @@ function Home() {
   }
 
   return (
-    <div className="flex w-3/4 h-screen m-auto p-8 flex-col items-center">
+    <div className="m-auto flex h-screen w-3/4 flex-col items-center p-8">
       <h1 className="text-3xl font-bold">
         Spotify StrideSync- {profile.display_name}
       </h1>
-      <div className="flex w-full overflow-hidden gap-8 px-4">
+      <div className="flex w-full gap-8 overflow-hidden px-4">
         <Card addClass="flex w-1/2">
           <h2>Select Playlist</h2>
-          <div className="flex flex-col w-full gap-4 overflow-y-auto">
+          <div className="flex w-full flex-col gap-4 overflow-y-auto">
             {playlists?.items?.map((playlist) => (
               <Playlist
                 name={playlist.name}
@@ -94,7 +94,7 @@ function Home() {
             ))}
           </div>
         </Card>
-        <div className="w-1/2 flex flex-col items-center gap-4">
+        <div className="flex w-1/2 flex-col items-center gap-4">
           {/* selections */}
           <RunDetailsBlock />
           <StrideDetailsBlock />
