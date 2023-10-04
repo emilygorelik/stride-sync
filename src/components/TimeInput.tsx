@@ -1,4 +1,4 @@
-import { TextInput } from './TextInput';
+import { NumberInput } from './NumberInput';
 
 interface TimeInputProps {
   hours?: boolean;
@@ -11,7 +11,7 @@ export function TimeInput({ hours, minutes, seconds }: TimeInputProps) {
       {hours && (
         <>
           <div className="form-control">
-            <TextInput
+            <NumberInput
               labelBottom="hr"
               dummyText="00"
               addClass="max-w-[4rem]"
@@ -23,7 +23,7 @@ export function TimeInput({ hours, minutes, seconds }: TimeInputProps) {
       {minutes && (
         <>
           <div className="form-control">
-            <TextInput
+            <NumberInput
               labelBottom="min"
               dummyText="00"
               addClass="max-w-[4rem]"
@@ -34,7 +34,11 @@ export function TimeInput({ hours, minutes, seconds }: TimeInputProps) {
       )}
       {seconds && (
         <div className="form-control">
-          <TextInput labelBottom="sec" dummyText="00" addClass="max-w-[4rem]" />
+          <NumberInput
+            labelBottom="sec"
+            dummyText="00"
+            addClass="max-w-[4rem]"
+          />
         </div>
       )}
     </div>
