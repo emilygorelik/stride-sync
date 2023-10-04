@@ -39,6 +39,10 @@ function Home() {
     return <div>Loading...</div>;
   }
 
+  function testing() {
+    console.log('button clicked');
+  }
+
   return (
     <div className="m-auto flex h-screen w-3/4 flex-col items-center p-8">
       <h1 className="text-3xl font-bold">
@@ -58,10 +62,9 @@ function Home() {
           </div>
         </Card>
         <div className="flex w-1/2 flex-col items-center gap-4">
-          {/* selections */}
           <RunDetailsBlock />
           <StrideDetailsBlock />
-          <SubmitButton>Sync My Stride</SubmitButton>
+          <SubmitButton onClick={() => testing()}>Sync My Stride</SubmitButton>
         </div>
       </div>
     </div>
