@@ -38,11 +38,59 @@ interface SpotifyProfile {
   uri: string;
 }
 
+interface SpotifyPlaylist {
+  collaborative: boolean;
+  description: string;
+  external_urls: {
+    spotify: string;
+  };
+  href: string;
+  id: string;
+  images: {
+    url: string;
+    height: number;
+    width: number;
+  }[];
+  name: string;
+  owner: {
+    external_urls: {
+      spotify: string;
+    };
+    followers: {
+      href: string;
+      total: number;
+    };
+    href: string;
+    id: string;
+    type: string;
+    uri: string;
+    display_name: string;
+  };
+  public: boolean;
+  snapshot_id: string;
+  tracks: {
+    href: string;
+    total: number;
+  };
+  type: string;
+  uri: string;
+}
+
+interface SpotifyPlaylists {
+  href: string;
+  limit: number;
+  next: string;
+  offset: number;
+  previous: string;
+  total: number;
+  items: SpotifyPlaylist[];
+}
+
 function Home() {
   const navigate = useNavigate();
   const [accessToken, setAccessToken] = useState<string>('inital');
   const [profile, setProfile] = useState<SpotifyProfile>();
-  const [playlists, setPlaylists] = useState<any>();
+  const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
 
   useEffect(() => {
     navigate('/home');
@@ -97,12 +145,11 @@ function Home() {
     fetchUserPlaylists();
   }, [accessToken]);
 
-  if (!profile) {
-    return <div>Loading...</div>; // Or any loading indicator while fetching the profile data
+  if (!profile || !playlists) {
+    return <div>Loading...</div>;
   }
 
-  console.log('--------------------------');
-  console.log(playlists);
+  console.log('playlits: ', playlists);
 
   return (
     <div className="flex w-3/4 h-screen m-auto p-8 flex-col items-center">
@@ -113,24 +160,14 @@ function Home() {
         <Card addClass="flex w-1/2">
           <h2>Select Playlist</h2>
           <div className="flex flex-col w-full gap-4 overflow-y-auto">
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            bottom
+            {playlists?.items?.map((playlist) => (
+              <Playlist
+                name={playlist.name}
+                imageURL={playlist.images[0].url}
+                numTracks={playlist.tracks.total}
+              />
+            ))}
           </div>
-          {/* TODO: create playlist display component */}
-          {/* map all playlists to this component */}
         </Card>
         <div className="w-1/2 flex flex-col items-center gap-4">
           {/* selections */}
