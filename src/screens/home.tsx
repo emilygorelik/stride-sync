@@ -12,7 +12,6 @@ import { SpotifyProfile } from '../types/spotifyProfile';
 function Home() {
   const navigate = useNavigate();
   const { accessToken } = useContext(UserTokenContext);
-  //const [accessToken, setAccessToken] = useState<string>(DEFAULT_TOKEN);
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
 
