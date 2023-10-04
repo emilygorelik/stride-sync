@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { checkStoredAccessToken, fetchPlaylists, fetchProfile } from '../api';
+import { UserTokenContext, fetchPlaylists, fetchProfile } from '../api';
 import { Card } from '../components/Card';
 import { Playlist } from '../components/Playlist';
 import { RunDetailsBlock } from '../components/RunDetailsBlock';
@@ -11,61 +11,28 @@ import { SpotifyProfile } from '../types/spotifyProfile';
 
 function Home() {
   const navigate = useNavigate();
-  const [accessToken, setAccessToken] = useState<string>('inital');
+  const { accessToken } = useContext(UserTokenContext);
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
 
   useEffect(() => {
-    navigate('/home');
-  }, []);
-
-  useEffect(() => {
-    async function initializeAccessToken() {
-      const storedAccessToken = await checkStoredAccessToken();
-
-      if (storedAccessToken) {
-        setAccessToken(storedAccessToken);
-        console.log('we have an access token ', storedAccessToken);
-      } else {
-        console.log('access token not received');
-        navigate('/');
-        return;
-      }
-    }
-
-    initializeAccessToken();
-  }, [navigate]);
-
-  useEffect(() => {
-    async function fetchUserProfile() {
+    async function fetchUserData() {
       if (accessToken) {
         try {
           const userProfile = await fetchProfile(accessToken);
+          const userPlaylists = await fetchPlaylists(accessToken);
           setProfile(userProfile);
+          setPlaylists(userPlaylists);
         } catch (error) {
           // Handle errors from the API call, e.g., token expired or invalid
-          console.error('Error fetching user profile:', error);
+          console.error('Error fetching user data:', error);
         }
+      } else {
+        navigate('/');
       }
     }
 
-    fetchUserProfile();
-  }, [accessToken]);
-
-  useEffect(() => {
-    async function fetchUserPlaylists() {
-      if (accessToken) {
-        try {
-          const userProfile = await fetchPlaylists(accessToken);
-          setPlaylists(userProfile);
-        } catch (error) {
-          // Handle errors from the API call, e.g., token expired or invalid
-          console.error('Error fetching user playlists:', error);
-        }
-      }
-    }
-
-    fetchUserPlaylists();
+    fetchUserData();
   }, [accessToken]);
 
   if (!profile || !playlists) {
