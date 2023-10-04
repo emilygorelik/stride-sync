@@ -109,7 +109,6 @@ export function UserTokenProvider({ children }: { children: ReactNode }) {
       redirectToAuthCodeFlow(clientId);
     } else {
       let access = await getAccessToken(clientId, code);
-      console.log('ACCESS', access);
       if (access) setAccessToken(access);
     }
   }

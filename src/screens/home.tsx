@@ -149,8 +149,6 @@ function Home() {
     return <div>Loading...</div>;
   }
 
-  console.log('playlits: ', playlists);
-
   return (
     <div className="flex w-3/4 h-screen m-auto p-8 flex-col items-center">
       <h1 className="text-3xl font-bold">
