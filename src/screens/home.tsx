@@ -15,6 +15,9 @@ function Home() {
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
 
+  const [stride, setStride] = useState<string>('');
+  const [height, setHeight] = useState<string>('');
+
   useEffect(() => {
     async function fetchUserData() {
       if (accessToken) {
@@ -39,8 +42,16 @@ function Home() {
     return <div>Loading...</div>;
   }
 
+  const handleStrideChange = (newStride: string) => {
+    setStride(newStride);
+  };
+
+  const handleHeightChange = (newHeight: string) => {
+    setHeight(newHeight);
+  };
+
   function testing() {
-    console.log('button clicked');
+    console.log('button clicked', height, ' ', stride);
   }
 
   return (
@@ -63,7 +74,10 @@ function Home() {
         </Card>
         <div className="flex w-1/2 flex-col items-center gap-4">
           <RunDetailsBlock />
-          <StrideDetailsBlock />
+          <StrideDetailsBlock
+            onStrideChange={handleStrideChange}
+            onHeightChange={handleHeightChange}
+          />
           <SubmitButton onClick={() => testing()}>Sync My Stride</SubmitButton>
         </div>
       </div>
