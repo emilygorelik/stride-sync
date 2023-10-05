@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Divider, NumberInput, RadioGroup, TimeInput } from '.';
 
 interface RunDetailsBlockProps {
@@ -37,11 +37,29 @@ export function RunDetailsBlock({
     onTimeChange(value);
   };
 
+  const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
+  const handleCheckboxChange = () => {
+    setIsSecondHalfActive(!isSecondHalfActive);
+  };
+
   return (
-    <div className="flex w-full flex-col ">
-      <h3>Run Details</h3>
+    <div className="flex w-full flex-col">
+      <div className="flex gap-2">
+        <h3>Run Details</h3>
+        <input
+          type="checkbox"
+          checked={isSecondHalfActive}
+          onChange={handleCheckboxChange}
+          className="toggle mr-2 border-gray-200 bg-gray-200"
+        />
+      </div>
+
       <div className="flex">
-        <div className="form-control w-fit">
+        <div
+          className={`form-control w-fit ${
+            !isSecondHalfActive ? '' : 'pointer-events-none opacity-50'
+          }`}
+        >
           <span className="label-text">Pace</span>
           <TimeInput minutes seconds onTimeChange={handlePaceChange} />
           <RadioGroup
@@ -51,7 +69,11 @@ export function RunDetailsBlock({
           />
         </div>
         <Divider />
-        <div className="form-control w-fit">
+        <div
+          className={`form-control w-fit ${
+            !isSecondHalfActive ? 'pointer-events-none opacity-50' : ''
+          }`}
+        >
           <span className="label-text">Distance</span>
           <NumberInput dummyText="00.00" onChange={handleDistanceChange} />
           <RadioGroup
@@ -60,7 +82,11 @@ export function RunDetailsBlock({
             onRadioChange={handleDistanceUnitChange}
           />
         </div>
-        <div className="form-control ml-6 w-fit">
+        <div
+          className={`form-control ml-6 w-fit ${
+            !isSecondHalfActive ? 'pointer-events-none opacity-50' : ''
+          }`}
+        >
           <span className="label-text">Time</span>
           <TimeInput hours minutes seconds onTimeChange={handleTimeChange} />
         </div>
