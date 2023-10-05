@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { SelectGroup } from './SelectGroup';
 
 interface TimeInputProps {
   hours?: boolean;
@@ -28,16 +29,16 @@ export function TimeInput({
     onTimeChange(formattedTime);
   }, [selectedHours, selectedMinutes, selectedSeconds]);
 
-  const handleHourChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedHours(parseInt(event.target.value, 10));
+  const handleHourChange = (selectedOption: number) => {
+    setSelectedHours(selectedOption);
   };
 
-  const handleMinuteChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedMinutes(parseInt(event.target.value, 10));
+  const handleMinuteChange = (selectedOption: number) => {
+    setSelectedMinutes(selectedOption);
   };
 
-  const handleSecondChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSeconds(parseInt(event.target.value, 10));
+  const handleSecondChange = (selectedOption: number) => {
+    setSelectedSeconds(selectedOption);
   };
 
   return (
@@ -45,17 +46,11 @@ export function TimeInput({
       {hours && (
         <>
           <div className="form-control">
-            <select
-              onChange={handleHourChange}
-              value={selectedHours}
-              className="select select-sm max-w-[4rem] bg-white text-black"
-            >
-              {[...Array(24)].map((_, index) => (
-                <option key={index} value={index}>
-                  {index < 10 ? `0${index}` : index}
-                </option>
-              ))}
-            </select>
+            <SelectGroup
+              options={[...Array(24).keys()]}
+              onSelectChange={handleHourChange}
+              selectedOption={selectedHours}
+            />
             <label>hr</label>
           </div>
           <h3>&nbsp;:&nbsp;</h3>
@@ -64,17 +59,11 @@ export function TimeInput({
       {minutes && (
         <>
           <div className="form-control">
-            <select
-              onChange={handleMinuteChange}
-              value={selectedMinutes}
-              className="select select-sm max-w-[4rem] bg-white text-black"
-            >
-              {[...Array(60)].map((_, index) => (
-                <option key={index} value={index}>
-                  {index < 10 ? `0${index}` : index}
-                </option>
-              ))}
-            </select>
+            <SelectGroup
+              options={[...Array(60).keys()]}
+              onSelectChange={handleMinuteChange}
+              selectedOption={selectedMinutes}
+            />
             <label>min</label>
           </div>
           <h3>&nbsp;:&nbsp;</h3>
@@ -82,17 +71,11 @@ export function TimeInput({
       )}
       {seconds && (
         <div className="form-control">
-          <select
-            onChange={handleSecondChange}
-            value={selectedSeconds}
-            className="select select-sm max-w-[4rem] bg-white text-black"
-          >
-            {[...Array(12)].map((_, index) => (
-              <option key={index} value={index * 5}>
-                {index * 5 < 10 ? `0${index * 5}` : index * 5}
-              </option>
-            ))}
-          </select>
+          <SelectGroup
+            options={[...Array(12).keys()].map((value) => value * 5)}
+            onSelectChange={handleSecondChange}
+            selectedOption={selectedSeconds}
+          />
           <label>sec</label>
         </div>
       )}
