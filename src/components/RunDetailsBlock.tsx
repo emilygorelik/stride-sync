@@ -1,8 +1,5 @@
 import { ChangeEvent } from 'react';
-import { Divider } from './Divider';
-import { NumberInput } from './NumberInput';
-import { RadioGroup } from './RadioGroup';
-import { TimeInput } from './TimeInput';
+import { Divider, NumberInput, RadioGroup, TimeInput } from '.';
 
 interface RunDetailsBlockProps {
   onPaceChange: (stride: string) => void;

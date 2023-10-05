@@ -1,7 +1,5 @@
 import { ChangeEvent } from 'react';
-import { Divider } from './Divider';
-import { NumberInput } from './NumberInput';
-import { RadioGroup } from './RadioGroup';
+import { Divider, NumberInput, RadioGroup } from '.';
 
 interface StrideDetailsBlockProps {
   onStrideChange: (stride: string) => void;

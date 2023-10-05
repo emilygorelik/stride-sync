@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserTokenContext, fetchPlaylists, fetchProfile } from '../api';
-import { Card } from '../components/Card';
-import { Playlist } from '../components/Playlist';
-import { RunDetailsBlock } from '../components/RunDetailsBlock';
-import { StrideDetailsBlock } from '../components/StrideDetailsBlock';
-import { SubmitButton } from '../components/SubmitButton';
-import { SpotifyPlaylists } from '../types/spotifyPlaylists';
-import { SpotifyProfile } from '../types/spotifyProfile';
+import {
+  Card,
+  Playlist,
+  RunDetailsBlock,
+  StrideDetailsBlock,
+  SubmitButton,
+} from '../components';
+import { SpotifyPlaylists, SpotifyProfile } from '../types/SpotifyAPI';
 
 function Home() {
   const navigate = useNavigate();

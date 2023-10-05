@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { UserTokenContext } from '../api';
-import { Card } from '../components/Card';
-import { SubmitButton } from '../components/SubmitButton';
+import { Card, SubmitButton } from '../components';
 
 function Login() {
   const { loginWithSpotify } = useContext(UserTokenContext);

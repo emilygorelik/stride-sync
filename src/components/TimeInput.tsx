@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Select } from './Select';
+import { Select } from '.';
 
 interface TimeInputProps {
   hours?: boolean;
