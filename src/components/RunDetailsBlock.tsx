@@ -2,7 +2,6 @@ import { ChangeEvent } from 'react';
 import { Divider } from './Divider';
 import { NumberInput } from './NumberInput';
 import { RadioGroup } from './RadioGroup';
-import { TimeInput } from './TimeInput';
 
 interface RunDetailsBlockProps {
   onPaceChange: (stride: string) => void;
@@ -36,7 +35,8 @@ export function RunDetailsBlock({
       <div className="flex">
         <div className="form-control w-fit">
           <span className="label-text">Pace</span>
-          <TimeInput minutes seconds />
+          <NumberInput dummyText="00:00" onChange={handlePaceChange} />
+          {/* <TimeInput minutes seconds onInputChange={handlePaceChange} /> */}
           <RadioGroup
             options={['minutes per mile', 'minutes per km']}
             groupName="pace"
@@ -45,16 +45,13 @@ export function RunDetailsBlock({
         <Divider />
         <div className="form-control w-fit">
           <span className="label-text">Distance</span>
-          <NumberInput
-            labelBottom="&nbsp;"
-            dummyText="00.00"
-            onChange={handleDistanceChange}
-          />
+          <NumberInput dummyText="00.00" onChange={handleDistanceChange} />
           <RadioGroup options={['miles', 'kilometers']} groupName="distance" />
         </div>
         <div className="form-control ml-6 w-fit">
           <span className="label-text">Time</span>
-          <TimeInput hours minutes seconds />
+          <NumberInput dummyText="00:00:00" onChange={handleTimeChange} />
+          {/* <TimeInput hours minutes seconds onInputChange={handleTimeChange} /> */}
         </div>
       </div>
     </div>
