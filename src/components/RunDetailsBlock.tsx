@@ -1,9 +1,35 @@
+import { ChangeEvent } from 'react';
 import { Divider } from './Divider';
 import { NumberInput } from './NumberInput';
 import { RadioGroup } from './RadioGroup';
 import { TimeInput } from './TimeInput';
 
-export function RunDetailsBlock() {
+interface RunDetailsBlockProps {
+  onPaceChange: (stride: string) => void;
+  onDistanceChange: (height: string) => void;
+  onTimeChange: (height: string) => void;
+}
+
+export function RunDetailsBlock({
+  onPaceChange,
+  onDistanceChange,
+  onTimeChange,
+}: RunDetailsBlockProps) {
+  const handlePaceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    onPaceChange(value);
+  };
+
+  const handleDistanceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    onDistanceChange(value);
+  };
+
+  const handleTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    onTimeChange(value);
+  };
+
   return (
     <div className="flex w-full flex-col ">
       <h3>Run Details</h3>
@@ -19,7 +45,11 @@ export function RunDetailsBlock() {
         <Divider />
         <div className="form-control w-fit">
           <span className="label-text">Distance</span>
-          <NumberInput labelBottom="&nbsp;" dummyText="00.00" />
+          <NumberInput
+            labelBottom="&nbsp;"
+            dummyText="00.00"
+            onChange={handleDistanceChange}
+          />
           <RadioGroup options={['miles', 'kilometers']} groupName="distance" />
         </div>
         <div className="form-control ml-6 w-fit">

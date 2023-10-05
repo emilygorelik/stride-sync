@@ -15,6 +15,10 @@ function Home() {
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
 
+  const [pace, setPace] = useState<string>('');
+  const [distance, setDistance] = useState<string>('');
+  const [time, setTime] = useState<string>('');
+
   const [stride, setStride] = useState<string>('');
   const [height, setHeight] = useState<string>('');
 
@@ -42,16 +46,34 @@ function Home() {
     return <div>Loading...</div>;
   }
 
-  const handleStrideChange = (newStride: string) => {
-    setStride(newStride);
+  const handleStrideChange = (value: string) => {
+    setStride(value);
   };
 
-  const handleHeightChange = (newHeight: string) => {
-    setHeight(newHeight);
+  const handleHeightChange = (value: string) => {
+    setHeight(value);
+  };
+
+  const handlePaceChange = (value: string) => {
+    setPace(value);
+  };
+
+  const handleDistanceChange = (value: string) => {
+    setDistance(value);
+  };
+
+  const handleTimeChange = (value: string) => {
+    setTime(value);
   };
 
   function testing() {
-    console.log('button clicked', height, ' ', stride);
+    console.log('------------------------');
+    console.log('button clicked');
+    console.log('recorded pace: ', pace);
+    console.log('recorded dist: ', distance);
+    console.log('recorded time: ', time);
+    console.log('recorded stride: ', stride);
+    console.log('recorded height: ', height);
   }
 
   return (
@@ -73,7 +95,11 @@ function Home() {
           </div>
         </Card>
         <div className="flex w-1/2 flex-col items-center gap-4">
-          <RunDetailsBlock />
+          <RunDetailsBlock
+            onPaceChange={handlePaceChange}
+            onDistanceChange={handleDistanceChange}
+            onTimeChange={handleTimeChange}
+          />
           <StrideDetailsBlock
             onStrideChange={handleStrideChange}
             onHeightChange={handleHeightChange}
