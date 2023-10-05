@@ -56,7 +56,7 @@ export function TimeInput({
                 </option>
               ))}
             </select>
-            <label>&nbsp;hr&nbsp;</label>
+            <label>hr</label>
           </div>
           <h3>&nbsp;:&nbsp;</h3>
         </>
@@ -75,7 +75,7 @@ export function TimeInput({
                 </option>
               ))}
             </select>
-            <label>&nbsp;min&nbsp;</label>
+            <label>min</label>
           </div>
           <h3>&nbsp;:&nbsp;</h3>
         </>
@@ -93,7 +93,7 @@ export function TimeInput({
               </option>
             ))}
           </select>
-          <label>&nbsp;sec&nbsp;</label>
+          <label>sec</label>
         </div>
       )}
     </div>
