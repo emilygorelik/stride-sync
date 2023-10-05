@@ -17,11 +17,18 @@ function Home() {
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
 
   const [pace, setPace] = useState<string>('');
+  const [paceUnit, setPaceUnit] = useState<string>('minutes per mile');
+
   const [distance, setDistance] = useState<string>('');
+  const [distanceUnit, setDistanceUnit] = useState<string>('miles');
+
   const [time, setTime] = useState<string>('');
 
   const [stride, setStride] = useState<string>('');
+  const [strideUnit, setStrideUnit] = useState<string>('inches');
+
   const [height, setHeight] = useState<string>('');
+  const [heightUnit, setHeightUnit] = useState<string>('inches');
 
   useEffect(() => {
     async function fetchUserData() {
@@ -51,16 +58,32 @@ function Home() {
     setStride(value);
   };
 
+  const handleStrideUnitChange = (value: string) => {
+    setStrideUnit(value);
+  };
+
   const handleHeightChange = (value: string) => {
     setHeight(value);
+  };
+
+  const handleHeightUnitChange = (value: string) => {
+    setHeightUnit(value);
   };
 
   const handlePaceChange = (value: string) => {
     setPace(value);
   };
 
+  const handlePaceUnitChange = (value: string) => {
+    setPaceUnit(value);
+  };
+
   const handleDistanceChange = (value: string) => {
     setDistance(value);
+  };
+
+  const handleDistanceUnitChange = (value: string) => {
+    setDistanceUnit(value);
   };
 
   const handleTimeChange = (value: string) => {
@@ -71,10 +94,14 @@ function Home() {
     console.log('------------------------');
     console.log('button clicked');
     console.log('recorded pace: ', pace);
+    console.log('recorded pace unit: ', paceUnit);
     console.log('recorded dist: ', distance);
+    console.log('recorded dist unit: ', distanceUnit);
     console.log('recorded time: ', time);
     console.log('recorded stride: ', stride);
+    console.log('recorded stride unit: ', strideUnit);
     console.log('recorded height: ', height);
+    console.log('recorded height unit: ', heightUnit);
   }
 
   return (
@@ -98,12 +125,16 @@ function Home() {
         <div className="flex w-1/2 flex-col items-center gap-4">
           <RunDetailsBlock
             onPaceChange={handlePaceChange}
+            onPaceUnitChange={handlePaceUnitChange}
             onDistanceChange={handleDistanceChange}
+            onDistanceUnitChange={handleDistanceUnitChange}
             onTimeChange={handleTimeChange}
           />
           <StrideDetailsBlock
             onStrideChange={handleStrideChange}
+            onStrideUnitChange={handleStrideUnitChange}
             onHeightChange={handleHeightChange}
+            onHeightUnitChange={handleHeightUnitChange}
           />
           <SubmitButton onClick={() => testing()}>Sync My Stride</SubmitButton>
         </div>
