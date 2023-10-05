@@ -1,14 +1,14 @@
-interface SelectGroupProps {
+interface SelectProps {
   options: number[];
   onSelectChange: (selectedOption: number) => void;
   selectedOption: number;
 }
 
-export function SelectGroup({
+export function Select({
   options,
   onSelectChange,
   selectedOption,
-}: SelectGroupProps) {
+}: SelectProps) {
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = parseInt(event.target.value, 10);
     onSelectChange(selectedValue);

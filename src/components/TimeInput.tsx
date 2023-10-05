@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SelectGroup } from './SelectGroup';
+import { Select } from './Select';
 
 interface TimeInputProps {
   hours?: boolean;
@@ -46,7 +46,7 @@ export function TimeInput({
       {hours && (
         <>
           <div className="form-control">
-            <SelectGroup
+            <Select
               options={[...Array(24).keys()]}
               onSelectChange={handleHourChange}
               selectedOption={selectedHours}
@@ -59,7 +59,7 @@ export function TimeInput({
       {minutes && (
         <>
           <div className="form-control">
-            <SelectGroup
+            <Select
               options={[...Array(60).keys()]}
               onSelectChange={handleMinuteChange}
               selectedOption={selectedMinutes}
@@ -71,7 +71,7 @@ export function TimeInput({
       )}
       {seconds && (
         <div className="form-control">
-          <SelectGroup
+          <Select
             options={[...Array(12).keys()].map((value) => value * 5)}
             onSelectChange={handleSecondChange}
             selectedOption={selectedSeconds}
