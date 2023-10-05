@@ -2,40 +2,38 @@ import { ChangeEvent, useState } from 'react';
 import { Divider, NumberInput, RadioGroup } from '.';
 
 interface StrideDetailsBlockProps {
-  onStrideChange: (stride: string) => void;
-  onStrideUnitChange: (unit: string) => void;
-  onHeightChange: (height: string) => void;
-  onHeightUnitChange: (unit: string) => void;
+  strideValue: (stride: number) => void;
 }
 
-export function StrideDetailsBlock({
-  onStrideChange,
-  onStrideUnitChange,
-  onHeightChange,
-  onHeightUnitChange,
-}: StrideDetailsBlockProps) {
-  const handleStrideChange = (e: ChangeEvent<HTMLInputElement>) => {
+export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
+  const [storedStride, setStoredStride] = useState(0);
+  const [stride, setStride] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const handleStrideInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    onStrideChange(value);
+    setStride(parseInt(value));
+    setStoredStride(parseInt(value));
   };
 
-  const handleStrideUnitChange = (unit: string) => {
-    onStrideUnitChange(unit);
-  };
-
-  const handleHeightChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleHeightInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    onHeightChange(value);
-  };
-
-  const handleHeightUnitChange = (unit: string) => {
-    onHeightUnitChange(unit);
+    setHeight(parseInt(value) * 0.414);
+    setStoredStride(parseInt(value) * 0.414);
   };
 
   const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
   const handleCheckboxChange = () => {
     setIsSecondHalfActive(!isSecondHalfActive);
+
+    if (isSecondHalfActive) {
+      setStoredStride(stride);
+    } else {
+      setStoredStride(height);
+    }
   };
+
+  strideValue(storedStride);
 
   return (
     <div className="flex w-full flex-col ">
@@ -56,11 +54,11 @@ export function StrideDetailsBlock({
         >
           {' '}
           <span className="label-text">Stride Length</span>
-          <NumberInput dummyText="00.00" onChange={handleStrideChange} />
+          <NumberInput dummyText="00.00" onChange={handleStrideInput} />
           <RadioGroup
             options={['inches', 'centimeters']}
             groupName="stride"
-            onRadioChange={handleStrideUnitChange}
+            onRadioChange={() => {}}
           />
         </div>
         <Divider />
@@ -71,11 +69,11 @@ export function StrideDetailsBlock({
         >
           {' '}
           <span className="label-text">Height</span>
-          <NumberInput dummyText="00.00" onChange={handleHeightChange} />
+          <NumberInput dummyText="00.00" onChange={handleHeightInput} />
           <RadioGroup
             options={['inches', 'centimeters']}
             groupName="height"
-            onRadioChange={handleHeightUnitChange}
+            onRadioChange={() => {}}
           />
         </div>
       </div>

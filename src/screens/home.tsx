@@ -24,11 +24,7 @@ function Home() {
 
   const [time, setTime] = useState<string>('');
 
-  const [stride, setStride] = useState<string>('');
-  const [strideUnit, setStrideUnit] = useState<string>('inches');
-
-  const [height, setHeight] = useState<string>('');
-  const [heightUnit, setHeightUnit] = useState<string>('inches');
+  const [stride, setStride] = useState<number>();
 
   useEffect(() => {
     async function fetchUserData() {
@@ -54,20 +50,8 @@ function Home() {
     return <div>Loading...</div>;
   }
 
-  const handleStrideChange = (value: string) => {
+  const handleStrideChange = (value: number) => {
     setStride(value);
-  };
-
-  const handleStrideUnitChange = (value: string) => {
-    setStrideUnit(value);
-  };
-
-  const handleHeightChange = (value: string) => {
-    setHeight(value);
-  };
-
-  const handleHeightUnitChange = (value: string) => {
-    setHeightUnit(value);
   };
 
   const handlePaceChange = (value: string) => {
@@ -99,9 +83,6 @@ function Home() {
     console.log('recorded dist unit: ', distanceUnit);
     console.log('recorded time: ', time);
     console.log('recorded stride: ', stride);
-    console.log('recorded stride unit: ', strideUnit);
-    console.log('recorded height: ', height);
-    console.log('recorded height unit: ', heightUnit);
   }
 
   return (
@@ -130,12 +111,7 @@ function Home() {
             onDistanceUnitChange={handleDistanceUnitChange}
             onTimeChange={handleTimeChange}
           />
-          <StrideDetailsBlock
-            onStrideChange={handleStrideChange}
-            onStrideUnitChange={handleStrideUnitChange}
-            onHeightChange={handleHeightChange}
-            onHeightUnitChange={handleHeightUnitChange}
-          />
+          <StrideDetailsBlock strideValue={handleStrideChange} />
           <SubmitButton onClick={() => testing()}>Sync My Stride</SubmitButton>
         </div>
       </div>
