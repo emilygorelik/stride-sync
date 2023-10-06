@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Divider, NumberInput, RadioGroup, Toggle } from '.';
 import { calculateStride, toInches } from '../calculations';
 
@@ -32,16 +32,28 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
   };
 
   const handleStrideUnit = (unit: string) => {
-    console.log('stride units are curr: ', unit);
-    console.log('stride is: ', stride);
     setStrideUnit(unit);
   };
 
   const handleHeightUnit = (unit: string) => {
-    console.log('height units are curr: ', unit);
-    console.log('height is: ', height);
     setHeightUnit(unit);
   };
+
+  useEffect(() => {
+    if (strideUnit === 'inches') {
+      setStoredStride(stride);
+    } else {
+      setStoredStride(toInches(stride));
+    }
+  }, [stride, strideUnit]);
+
+  useEffect(() => {
+    if (heightUnit === 'inches') {
+      setStoredStride(height);
+    } else {
+      setStoredStride(toInches(height));
+    }
+  }, [height, heightUnit]);
 
   const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
   const handleCheckboxChange = () => {
