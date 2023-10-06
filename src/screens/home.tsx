@@ -27,7 +27,7 @@ function Home() {
   const [stride, setStride] = useState<number>();
 
   useEffect(() => {
-    async function fetchUserData() {
+    async function fetchData() {
       if (accessToken) {
         try {
           const userProfile = await fetchProfile(accessToken);
@@ -43,7 +43,7 @@ function Home() {
       }
     }
 
-    fetchUserData();
+    fetchData();
   }, [accessToken]);
 
   if (!profile || !playlists) {
