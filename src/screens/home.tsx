@@ -65,7 +65,7 @@ function Home() {
         Spotify StrideSync- {profile.display_name}
       </h1>
       <div className="flex w-full gap-8 overflow-hidden px-4">
-        <Card addClass="flex w-1/2">
+        <Card className="flex w-1/2">
           <h2>Select Playlist</h2>
           <div className="flex w-full flex-col gap-4 overflow-y-auto">
             {playlists?.items?.map((playlist) => (

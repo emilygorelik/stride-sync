@@ -1,23 +1,19 @@
 interface SelectProps {
   options: number[];
-  onSelectChange: (selectedOption: number) => void;
-  selectedOption: number;
+  onChange: (selectedOption: number) => void;
+  value: number;
 }
 
-export function Select({
-  options,
-  onSelectChange,
-  selectedOption,
-}: SelectProps) {
+export function Select({ options, onChange, value }: SelectProps) {
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = parseInt(event.target.value, 10);
-    onSelectChange(selectedValue);
+    onChange(selectedValue);
   };
 
   return (
     <select
       onChange={handleSelectChange}
-      value={selectedOption}
+      value={value}
       className="select select-sm max-w-[4rem] bg-white text-black"
     >
       {options.map((option, index) => (

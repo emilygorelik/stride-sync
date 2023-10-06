@@ -2,20 +2,16 @@ import { useState } from 'react';
 
 interface RadioGroupProps {
   options: string[];
-  groupName: string;
-  onRadioChange: (selectedValue: string) => void;
+  name: string;
+  onChange: (selectedValue: string) => void;
 }
 
-export function RadioGroup({
-  options,
-  groupName,
-  onRadioChange,
-}: RadioGroupProps) {
+export function RadioGroup({ options, name, onChange }: RadioGroupProps) {
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
   const handleRadioChange = (option: string) => {
     setSelectedOption(option);
-    onRadioChange(option);
+    onChange(option);
   };
 
   return (
@@ -24,7 +20,7 @@ export function RadioGroup({
         <label className="flex cursor-pointer justify-start" key={index}>
           <input
             type="radio"
-            name={groupName}
+            name={name}
             className="radio radio-xs mr-2"
             checked={option === selectedOption}
             onChange={() => handleRadioChange(option)}

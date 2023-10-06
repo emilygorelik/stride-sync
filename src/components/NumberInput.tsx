@@ -1,33 +1,22 @@
 interface TextInputProps {
-  labelTop?: string;
-  labelBottom?: string;
-  dummyText?: string;
-  addValue?: string;
-  under?: boolean;
-  addClass?: string;
+  placeholder?: string;
+  className?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export function NumberInput({
-  labelTop,
-  labelBottom,
-  dummyText,
-  addValue,
+  placeholder,
+  className,
   onChange,
-
-  addClass,
 }: TextInputProps) {
   return (
     <div className="form-control w-fit">
-      <span className="label-text">{labelTop}</span>
       <input
         type="number"
-        placeholder={dummyText}
-        value={addValue}
+        placeholder={placeholder}
         onChange={onChange}
-        className={`"input focus:outline-none" no-arrows input-sm w-full max-w-[8rem] rounded-lg bg-white text-black ${addClass}`}
+        className={`no-arrows input input-sm mb-2 w-full max-w-[8rem] rounded-lg bg-white text-black focus:outline-none ${className}`}
       />
-      <span className="label-text">{labelBottom}</span>
     </div>
   );
 }
