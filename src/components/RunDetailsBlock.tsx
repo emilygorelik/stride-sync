@@ -56,7 +56,7 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
           <span className="label-text">Pace</span>
           <TimeInput minutes seconds onChange={handlePaceInput} />
           <RadioGroup
-            options={['minutes per mile', 'minutes per km']}
+            options={['mile', 'kilometer']}
             name="pace"
             onChange={() => {}}
           />

@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { Divider, NumberInput, RadioGroup, Toggle } from '.';
-import { calculateStride } from '../calculations';
+import { calculateStride, toInches } from '../calculations';
 
 interface StrideDetailsBlockProps {
   strideValue: (stride: number) => void;
@@ -10,18 +10,37 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
   const [storedStride, setStoredStride] = useState(0);
   const [stride, setStride] = useState(0);
   const [height, setHeight] = useState(0);
+  const [storedUnit, setStoredUnit] = useState('inches');
+  const [strideUnit, setStrideUnit] = useState('inches');
+  const [heightUnit, setHeightUnit] = useState('inches');
 
   const handleStrideInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setStride(parseFloat(value));
-    setStoredStride(parseFloat(value));
+    let valueNum = parseFloat(value);
+    if (strideUnit != 'inches') valueNum = toInches(valueNum);
+    setStride(valueNum);
+    setStoredStride(valueNum);
   };
 
   const handleHeightInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const conversion = calculateStride(parseFloat(value));
+    let valueNum = parseFloat(value);
+    if (heightUnit != 'inches') valueNum = toInches(valueNum);
+    const conversion = calculateStride(valueNum);
     setHeight(conversion);
     setStoredStride(conversion);
+  };
+
+  const handleStrideUnit = (unit: string) => {
+    console.log('stride units are curr: ', unit);
+    console.log('stride is: ', stride);
+    setStrideUnit(unit);
+  };
+
+  const handleHeightUnit = (unit: string) => {
+    console.log('height units are curr: ', unit);
+    console.log('height is: ', height);
+    setHeightUnit(unit);
   };
 
   const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
@@ -54,7 +73,7 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
           <RadioGroup
             options={['inches', 'centimeters']}
             name="stride"
-            onChange={() => {}}
+            onChange={handleStrideUnit}
           />
         </div>
         <Divider />
@@ -68,7 +87,7 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
           <RadioGroup
             options={['inches', 'centimeters']}
             name="height"
-            onChange={() => {}}
+            onChange={handleHeightUnit}
           />
         </div>
       </div>

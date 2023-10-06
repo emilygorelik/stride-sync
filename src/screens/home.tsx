@@ -55,8 +55,8 @@ function Home() {
   function testing() {
     console.log('------------------------');
     console.log('button clicked');
-    console.log('recorded pace: ', pace);
-    console.log('recorded stride: ', stride);
+    console.log('recorded pace: ', pace, 'seconds per mile');
+    console.log('recorded stride: ', stride, ' inches');
   }
 
   return (
