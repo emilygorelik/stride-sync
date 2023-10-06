@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserTokenContext, fetchPlaylists, fetchProfile } from '../api';
-import { Card } from '../components/Card';
-import { Playlist } from '../components/Playlist';
-import { RunDetailsBlock } from '../components/RunDetailsBlock';
-import { StrideDetailsBlock } from '../components/StrideDetailsBlock';
-import { SubmitButton } from '../components/SubmitButton';
-import { SpotifyPlaylists } from '../types/spotifyPlaylists';
-import { SpotifyProfile } from '../types/spotifyProfile';
+import {
+  Card,
+  Playlist,
+  RunDetailsBlock,
+  StrideDetailsBlock,
+  SubmitButton,
+} from '../components';
+import { SpotifyPlaylists, SpotifyProfile } from '../types/SpotifyAPI';
 
 function Home() {
   const navigate = useNavigate();
@@ -15,8 +16,12 @@ function Home() {
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
 
+  const [pace, setPace] = useState<number>();
+
+  const [stride, setStride] = useState<number>();
+
   useEffect(() => {
-    async function fetchUserData() {
+    async function fetchData() {
       if (accessToken) {
         try {
           const userProfile = await fetchProfile(accessToken);
@@ -32,11 +37,26 @@ function Home() {
       }
     }
 
-    fetchUserData();
+    fetchData();
   }, [accessToken]);
 
   if (!profile || !playlists) {
     return <div>Loading...</div>;
+  }
+
+  const handleStrideChange = (value: number) => {
+    setStride(value);
+  };
+
+  const handlePaceChange = (value: number) => {
+    setPace(value);
+  };
+
+  function testing() {
+    console.log('------------------------');
+    console.log('button clicked');
+    console.log('recorded pace: ', pace);
+    console.log('recorded stride: ', stride);
   }
 
   return (
@@ -58,10 +78,9 @@ function Home() {
           </div>
         </Card>
         <div className="flex w-1/2 flex-col items-center gap-4">
-          {/* selections */}
-          <RunDetailsBlock />
-          <StrideDetailsBlock />
-          <SubmitButton>Sync My Stride</SubmitButton>
+          <RunDetailsBlock paceValue={handlePaceChange} />
+          <StrideDetailsBlock strideValue={handleStrideChange} />
+          <SubmitButton onClick={() => testing()}>Sync My Stride</SubmitButton>
         </div>
       </div>
     </div>

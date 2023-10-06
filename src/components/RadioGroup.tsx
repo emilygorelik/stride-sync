@@ -3,13 +3,19 @@ import { useState } from 'react';
 interface RadioGroupProps {
   options: string[];
   groupName: string;
+  onRadioChange: (selectedValue: string) => void;
 }
 
-export function RadioGroup({ options, groupName }: RadioGroupProps) {
+export function RadioGroup({
+  options,
+  groupName,
+  onRadioChange,
+}: RadioGroupProps) {
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
   const handleRadioChange = (option: string) => {
     setSelectedOption(option);
+    onRadioChange(option);
   };
 
   return (

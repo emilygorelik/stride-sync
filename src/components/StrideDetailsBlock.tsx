@@ -1,22 +1,80 @@
-import { Divider } from './Divider';
-import { RadioGroup } from './RadioGroup';
-import { TextInput } from './TextInput';
+import { ChangeEvent, useState } from 'react';
+import { Divider, NumberInput, RadioGroup } from '.';
+import { calculateStride } from '../calculations';
 
-export function StrideDetailsBlock() {
+interface StrideDetailsBlockProps {
+  strideValue: (stride: number) => void;
+}
+
+export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
+  const [storedStride, setStoredStride] = useState(0);
+  const [stride, setStride] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  const handleStrideInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setStride(parseFloat(value));
+    setStoredStride(parseFloat(value));
+  };
+
+  const handleHeightInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const conversion = calculateStride(parseFloat(value));
+    setHeight(conversion);
+    setStoredStride(conversion);
+  };
+
+  const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
+  const handleCheckboxChange = () => {
+    setIsSecondHalfActive(!isSecondHalfActive);
+
+    if (isSecondHalfActive) {
+      setStoredStride(stride);
+    } else {
+      setStoredStride(height);
+    }
+  };
+
+  strideValue(storedStride);
+
   return (
     <div className="flex w-full flex-col ">
-      <h3>Stride Details</h3>
+      <div className="flex gap-2">
+        <h3>Stride Details</h3>
+        <input
+          type="checkbox"
+          checked={isSecondHalfActive}
+          onChange={handleCheckboxChange}
+          className="toggle mr-2 border-gray-200 bg-gray-200"
+        />
+      </div>
       <div className="flex">
-        <div className="form-control w-fit">
+        <div
+          className={`form-control w-fit ${
+            !isSecondHalfActive ? '' : 'pointer-events-none opacity-50'
+          }`}
+        >
           <span className="label-text">Stride Length</span>
-          <TextInput dummyText="00.00" />
-          <RadioGroup options={['inches', 'centimeters']} groupName="stride" />
+          <NumberInput dummyText="00.00" onChange={handleStrideInput} />
+          <RadioGroup
+            options={['inches', 'centimeters']}
+            groupName="stride"
+            onRadioChange={() => {}}
+          />
         </div>
-        <Divider></Divider>
-        <div className="form-control w-fit">
+        <Divider />
+        <div
+          className={`form-control w-fit ${
+            !isSecondHalfActive ? 'pointer-events-none opacity-50' : ''
+          }`}
+        >
           <span className="label-text">Height</span>
-          <TextInput dummyText="00.00" />
-          <RadioGroup options={['inches', 'centimeters']} groupName="height" />
+          <NumberInput dummyText="00.00" onChange={handleHeightInput} />
+          <RadioGroup
+            options={['inches', 'centimeters']}
+            groupName="height"
+            onRadioChange={() => {}}
+          />
         </div>
       </div>
     </div>
