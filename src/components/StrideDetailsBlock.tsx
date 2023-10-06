@@ -1,72 +1,75 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Divider, NumberInput, RadioGroup, Toggle } from '.';
-import { calculateStride, toInches } from '../calculations';
+import { heightToStride, toInches } from '../calculations';
 
 interface StrideDetailsBlockProps {
   strideValue: (stride: number) => void;
 }
 
 export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
-  const [storedStride, setStoredStride] = useState(0);
   const [stride, setStride] = useState(0);
   const [height, setHeight] = useState(0);
-  const [storedUnit, setStoredUnit] = useState('inches');
   const [strideUnit, setStrideUnit] = useState('inches');
   const [heightUnit, setHeightUnit] = useState('inches');
+  const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
 
   const handleStrideInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     let valueNum = parseFloat(value);
-    if (strideUnit != 'inches') valueNum = toInches(valueNum);
-    setStride(valueNum);
-    setStoredStride(valueNum);
+    console.log('stride input: ', valueNum);
+    strideCalculation(valueNum, strideUnit);
+  };
+
+  const handleStrideUnit = (unit: string) => {
+    console.log('stride unit: ', unit);
+    strideCalculation(stride, unit);
+  };
+
+  const strideCalculation = (value: number, unit: string) => {
+    console.log('logged info is: ', value, ' ', unit);
+    if (unit === 'inches') {
+      strideValue(value);
+    } else {
+      strideValue(toInches(value));
+    }
+    setStride(value);
+    setStrideUnit(unit);
   };
 
   const handleHeightInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     let valueNum = parseFloat(value);
-    if (heightUnit != 'inches') valueNum = toInches(valueNum);
-    const conversion = calculateStride(valueNum);
-    setHeight(conversion);
-    setStoredStride(conversion);
-  };
-
-  const handleStrideUnit = (unit: string) => {
-    setStrideUnit(unit);
+    console.log('height input: ', valueNum);
+    heightCalculation(valueNum, heightUnit);
   };
 
   const handleHeightUnit = (unit: string) => {
+    console.log('height unit: ', unit);
+    heightCalculation(height, unit);
+  };
+
+  const heightCalculation = (value: number, unit: string) => {
+    console.log('logged info is: ', value, ' ', unit);
+    if (unit === 'inches') {
+      strideValue(heightToStride(value));
+    } else {
+      strideValue(toInches(heightToStride(value)));
+    }
+    setHeight(value);
     setHeightUnit(unit);
   };
 
-  useEffect(() => {
-    if (strideUnit === 'inches') {
-      setStoredStride(stride);
-    } else {
-      setStoredStride(toInches(stride));
-    }
-  }, [stride, strideUnit]);
-
-  useEffect(() => {
-    if (heightUnit === 'inches') {
-      setStoredStride(height);
-    } else {
-      setStoredStride(toInches(height));
-    }
-  }, [height, heightUnit]);
-
-  const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
   const handleCheckboxChange = () => {
     setIsSecondHalfActive(!isSecondHalfActive);
 
     if (isSecondHalfActive) {
-      setStoredStride(stride);
+      console.log('toggled to: ', stride);
+      strideCalculation(stride, strideUnit);
     } else {
-      setStoredStride(height);
+      console.log('toggled to: ', height);
+      heightCalculation(height, heightUnit);
     }
   };
-
-  strideValue(storedStride);
 
   return (
     <div className="flex w-full flex-col ">
