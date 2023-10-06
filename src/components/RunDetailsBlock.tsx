@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { Divider, NumberInput, RadioGroup, TimeInput } from '.';
+import { Divider, NumberInput, RadioGroup, TimeInput, Toggle } from '.';
 
 interface RunDetailsBlockProps {
   paceValue: (stride: number) => void;
@@ -44,12 +44,7 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
     <div className="flex w-full flex-col">
       <div className="flex gap-2">
         <h3>Run Details</h3>
-        <input
-          type="checkbox"
-          checked={isSecondHalfActive}
-          onChange={handleCheckboxChange}
-          className="toggle mr-2 border-gray-200 bg-gray-200"
-        />
+        <Toggle checked={isSecondHalfActive} onChange={handleCheckboxChange} />
       </div>
 
       <div className="flex">
@@ -59,11 +54,11 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
           }`}
         >
           <span className="label-text">Pace</span>
-          <TimeInput minutes seconds onTimeChange={handlePaceInput} />
+          <TimeInput minutes seconds onChange={handlePaceInput} />
           <RadioGroup
             options={['minutes per mile', 'minutes per km']}
-            groupName="pace"
-            onRadioChange={() => {}}
+            name="pace"
+            onChange={() => {}}
           />
         </div>
         <Divider />
@@ -73,11 +68,11 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
           }`}
         >
           <span className="label-text">Distance</span>
-          <NumberInput dummyText="00.00" onChange={handleDistanceInput} />
+          <NumberInput placeholder="00.00" onChange={handleDistanceInput} />
           <RadioGroup
             options={['miles', 'kilometers']}
-            groupName="distance"
-            onRadioChange={() => {}}
+            name="distance"
+            onChange={() => {}}
           />
         </div>
         <div
@@ -86,7 +81,7 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
           }`}
         >
           <span className="label-text">Time</span>
-          <TimeInput hours minutes seconds onTimeChange={handleTimeInput} />
+          <TimeInput hours minutes seconds onChange={handleTimeInput} />
         </div>
       </div>
     </div>

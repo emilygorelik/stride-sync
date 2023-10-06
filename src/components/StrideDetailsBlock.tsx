@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { Divider, NumberInput, RadioGroup } from '.';
+import { Divider, NumberInput, RadioGroup, Toggle } from '.';
 import { calculateStride } from '../calculations';
 
 interface StrideDetailsBlockProps {
@@ -41,12 +41,7 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
     <div className="flex w-full flex-col ">
       <div className="flex gap-2">
         <h3>Stride Details</h3>
-        <input
-          type="checkbox"
-          checked={isSecondHalfActive}
-          onChange={handleCheckboxChange}
-          className="toggle mr-2 border-gray-200 bg-gray-200"
-        />
+        <Toggle checked={isSecondHalfActive} onChange={handleCheckboxChange} />
       </div>
       <div className="flex">
         <div
@@ -55,11 +50,11 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
           }`}
         >
           <span className="label-text">Stride Length</span>
-          <NumberInput dummyText="00.00" onChange={handleStrideInput} />
+          <NumberInput placeholder="00.00" onChange={handleStrideInput} />
           <RadioGroup
             options={['inches', 'centimeters']}
-            groupName="stride"
-            onRadioChange={() => {}}
+            name="stride"
+            onChange={() => {}}
           />
         </div>
         <Divider />
@@ -69,11 +64,11 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
           }`}
         >
           <span className="label-text">Height</span>
-          <NumberInput dummyText="00.00" onChange={handleHeightInput} />
+          <NumberInput placeholder="00.00" onChange={handleHeightInput} />
           <RadioGroup
             options={['inches', 'centimeters']}
-            groupName="height"
-            onRadioChange={() => {}}
+            name="height"
+            onChange={() => {}}
           />
         </div>
       </div>

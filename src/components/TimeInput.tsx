@@ -6,14 +6,14 @@ interface TimeInputProps {
   hours?: boolean;
   minutes?: boolean;
   seconds?: boolean;
-  onTimeChange: (time: number) => void;
+  onChange: (time: number) => void;
 }
 
 export function TimeInput({
   hours,
   minutes,
   seconds,
-  onTimeChange,
+  onChange,
 }: TimeInputProps) {
   const [selectedHours, setSelectedHours] = useState<number>(0);
   const [selectedMinutes, setSelectedMinutes] = useState<number>(0);
@@ -26,7 +26,7 @@ export function TimeInput({
       selectedSeconds,
     );
 
-    onTimeChange(timeInSecs);
+    onChange(timeInSecs);
   }, [selectedHours, selectedMinutes, selectedSeconds]);
 
   const handleHourChange = (selectedOption: number) => {
@@ -48,8 +48,8 @@ export function TimeInput({
           <div className="form-control">
             <Select
               options={[...Array(24).keys()]}
-              onSelectChange={handleHourChange}
-              selectedOption={selectedHours}
+              onChange={handleHourChange}
+              value={selectedHours}
             />
             <label>hr</label>
           </div>
@@ -61,8 +61,8 @@ export function TimeInput({
           <div className="form-control">
             <Select
               options={[...Array(60).keys()]}
-              onSelectChange={handleMinuteChange}
-              selectedOption={selectedMinutes}
+              onChange={handleMinuteChange}
+              value={selectedMinutes}
             />
             <label>min</label>
           </div>
@@ -73,8 +73,8 @@ export function TimeInput({
         <div className="form-control">
           <Select
             options={[...Array(12).keys()].map((value) => value * 5)}
-            onSelectChange={handleSecondChange}
-            selectedOption={selectedSeconds}
+            onChange={handleSecondChange}
+            value={selectedSeconds}
           />
           <label>sec</label>
         </div>
