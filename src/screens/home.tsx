@@ -16,13 +16,7 @@ function Home() {
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
 
-  const [pace, setPace] = useState<string>('');
-  const [paceUnit, setPaceUnit] = useState<string>('minutes per mile');
-
-  const [distance, setDistance] = useState<string>('');
-  const [distanceUnit, setDistanceUnit] = useState<string>('miles');
-
-  const [time, setTime] = useState<string>('');
+  const [pace, setPace] = useState<number>();
 
   const [stride, setStride] = useState<number>();
 
@@ -54,34 +48,14 @@ function Home() {
     setStride(value);
   };
 
-  const handlePaceChange = (value: string) => {
+  const handlePaceChange = (value: number) => {
     setPace(value);
-  };
-
-  const handlePaceUnitChange = (value: string) => {
-    setPaceUnit(value);
-  };
-
-  const handleDistanceChange = (value: string) => {
-    setDistance(value);
-  };
-
-  const handleDistanceUnitChange = (value: string) => {
-    setDistanceUnit(value);
-  };
-
-  const handleTimeChange = (value: string) => {
-    setTime(value);
   };
 
   function testing() {
     console.log('------------------------');
     console.log('button clicked');
     console.log('recorded pace: ', pace);
-    console.log('recorded pace unit: ', paceUnit);
-    console.log('recorded dist: ', distance);
-    console.log('recorded dist unit: ', distanceUnit);
-    console.log('recorded time: ', time);
     console.log('recorded stride: ', stride);
   }
 
@@ -104,13 +78,7 @@ function Home() {
           </div>
         </Card>
         <div className="flex w-1/2 flex-col items-center gap-4">
-          <RunDetailsBlock
-            onPaceChange={handlePaceChange}
-            onPaceUnitChange={handlePaceUnitChange}
-            onDistanceChange={handleDistanceChange}
-            onDistanceUnitChange={handleDistanceUnitChange}
-            onTimeChange={handleTimeChange}
-          />
+          <RunDetailsBlock paceValue={handlePaceChange} />
           <StrideDetailsBlock strideValue={handleStrideChange} />
           <SubmitButton onClick={() => testing()}>Sync My Stride</SubmitButton>
         </div>

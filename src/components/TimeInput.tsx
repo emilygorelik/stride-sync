@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Select } from '.';
+import { timeInSeconds } from '../calculations';
 
 interface TimeInputProps {
   hours?: boolean;
   minutes?: boolean;
   seconds?: boolean;
-  onTimeChange: (time: string) => void;
+  onTimeChange: (time: number) => void;
 }
 
 export function TimeInput({
@@ -19,14 +20,13 @@ export function TimeInput({
   const [selectedSeconds, setSelectedSeconds] = useState<number>(0);
 
   useEffect(() => {
-    // Format the time string as "hh:mm:ss"
-    const formattedTime = `${selectedHours
-      .toString()
-      .padStart(2, '0')}:${selectedMinutes
-      .toString()
-      .padStart(2, '0')}:${selectedSeconds.toString().padStart(2, '0')}`;
+    const timeInSecs = timeInSeconds(
+      selectedHours,
+      selectedMinutes,
+      selectedSeconds,
+    );
 
-    onTimeChange(formattedTime);
+    onTimeChange(timeInSecs);
   }, [selectedHours, selectedMinutes, selectedSeconds]);
 
   const handleHourChange = (selectedOption: number) => {

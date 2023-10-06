@@ -2,45 +2,43 @@ import { ChangeEvent, useState } from 'react';
 import { Divider, NumberInput, RadioGroup, TimeInput } from '.';
 
 interface RunDetailsBlockProps {
-  onPaceChange: (stride: string) => void;
-  onPaceUnitChange: (unit: string) => void;
-  onDistanceChange: (height: string) => void;
-  onDistanceUnitChange: (unit: string) => void;
-  onTimeChange: (height: string) => void;
+  paceValue: (stride: number) => void;
 }
 
-export function RunDetailsBlock({
-  onPaceChange,
-  onPaceUnitChange,
-  onDistanceChange,
-  onDistanceUnitChange,
-  onTimeChange,
-}: RunDetailsBlockProps) {
-  const handlePaceChange = (value: string) => {
-    onPaceChange(value);
+export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
+  const [storedPace, setStoredPace] = useState(0);
+  const [pace, setPace] = useState(0);
+  const [distance, setDistance] = useState(0);
+  const [time, setTime] = useState(0);
+
+  const handlePaceInput = (value: number) => {
+    setPace(value);
+    setStoredPace(value);
   };
 
-  const handlePaceUnitChange = (unit: string) => {
-    onPaceUnitChange(unit);
+  const handleTimeInput = (value: number) => {
+    setTime(value);
+    setStoredPace(value / distance);
   };
 
-  const handleDistanceChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleDistanceInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    onDistanceChange(value);
-  };
-
-  const handleDistanceUnitChange = (unit: string) => {
-    onDistanceUnitChange(unit);
-  };
-
-  const handleTimeChange = (value: string) => {
-    onTimeChange(value);
+    setDistance(parseFloat(value));
+    setStoredPace(time / parseFloat(value));
   };
 
   const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
   const handleCheckboxChange = () => {
     setIsSecondHalfActive(!isSecondHalfActive);
+
+    if (isSecondHalfActive) {
+      setStoredPace(pace);
+    } else {
+      setStoredPace(time / distance);
+    }
   };
+
+  paceValue(storedPace);
 
   return (
     <div className="flex w-full flex-col">
@@ -61,11 +59,11 @@ export function RunDetailsBlock({
           }`}
         >
           <span className="label-text">Pace</span>
-          <TimeInput minutes seconds onTimeChange={handlePaceChange} />
+          <TimeInput minutes seconds onTimeChange={handlePaceInput} />
           <RadioGroup
             options={['minutes per mile', 'minutes per km']}
             groupName="pace"
-            onRadioChange={handlePaceUnitChange}
+            onRadioChange={() => {}}
           />
         </div>
         <Divider />
@@ -75,11 +73,11 @@ export function RunDetailsBlock({
           }`}
         >
           <span className="label-text">Distance</span>
-          <NumberInput dummyText="00.00" onChange={handleDistanceChange} />
+          <NumberInput dummyText="00.00" onChange={handleDistanceInput} />
           <RadioGroup
             options={['miles', 'kilometers']}
             groupName="distance"
-            onRadioChange={handleDistanceUnitChange}
+            onRadioChange={() => {}}
           />
         </div>
         <div
@@ -88,7 +86,7 @@ export function RunDetailsBlock({
           }`}
         >
           <span className="label-text">Time</span>
-          <TimeInput hours minutes seconds onTimeChange={handleTimeChange} />
+          <TimeInput hours minutes seconds onTimeChange={handleTimeInput} />
         </div>
       </div>
     </div>
