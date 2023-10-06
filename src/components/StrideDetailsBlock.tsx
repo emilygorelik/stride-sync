@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { Divider, NumberInput, RadioGroup } from '.';
+import { calculateStride } from '../calculations';
 
 interface StrideDetailsBlockProps {
   strideValue: (stride: number) => void;
@@ -18,8 +19,9 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
 
   const handleHeightInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setHeight(parseFloat(value) * 0.414);
-    setStoredStride(parseFloat(value) * 0.414);
+    const conversion = calculateStride(parseFloat(value));
+    setHeight(conversion);
+    setStoredStride(conversion);
   };
 
   const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
