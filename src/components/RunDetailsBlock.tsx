@@ -1,44 +1,85 @@
 import { ChangeEvent, useState } from 'react';
 import { Divider, NumberInput, RadioGroup, TimeInput, Toggle } from '.';
+import { toMiles } from '../calculations';
 
 interface RunDetailsBlockProps {
   paceValue: (stride: number) => void;
 }
 
 export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
-  const [storedPace, setStoredPace] = useState(0);
   const [pace, setPace] = useState(0);
   const [distance, setDistance] = useState(0);
   const [time, setTime] = useState(0);
+  const [paceUnit, setPaceUnit] = useState('min per mile');
+  const [distanceUnit, setDistanceUnit] = useState('miles');
+  const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
 
   const handlePaceInput = (value: number) => {
-    setPace(value);
-    setStoredPace(value);
+    console.log('pace input: ', value);
+    paceCalculation(value, paceUnit);
   };
 
-  const handleTimeInput = (value: number) => {
-    setTime(value);
-    setStoredPace(value / distance);
+  const handlePaceUnit = (unit: string) => {
+    console.log('stride unit: ', unit);
+    paceCalculation(pace, unit);
+  };
+
+  const paceCalculation = (value: number, unit: string) => {
+    console.log('logged info is: ', value, ' ', unit);
+    if (unit === 'min per mile') {
+      paceValue(value);
+    } else {
+      paceValue(toMiles(value));
+    }
+    setPace(value);
+    setPaceUnit(unit);
   };
 
   const handleDistanceInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    setDistance(parseFloat(value));
-    setStoredPace(time / parseFloat(value));
+    let valueNum = parseFloat(value);
+    console.log('dist input: ', valueNum);
+    distTimeCalculation(valueNum, distanceUnit, time);
   };
 
-  const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
+  const handleDistanceUnit = (unit: string) => {
+    console.log('dist unit: ', unit);
+    distTimeCalculation(distance, unit, time);
+  };
+
+  const handleTimeInput = (value: number) => {
+    console.log('time input: ', value);
+    distTimeCalculation(distance, distanceUnit, value);
+  };
+
+  const distTimeCalculation = (
+    distValue: number,
+    unit: string,
+    timeValue: number,
+  ) => {
+    console.log('logged info is: ', distValue, ' ', unit, ' ', timeValue);
+    if (unit === 'miles') {
+      paceValue(timeValue / distValue);
+    } else {
+      console.log(distValue, ' km is ', toMiles(distValue), ' miles');
+      paceValue(timeValue / toMiles(distValue));
+    }
+    setDistance(distValue);
+    setDistanceUnit(unit);
+    setTime(timeValue);
+  };
+
   const handleCheckboxChange = () => {
     setIsSecondHalfActive(!isSecondHalfActive);
 
     if (isSecondHalfActive) {
-      setStoredPace(pace);
+      console.log('toggled to: ', pace);
+      paceCalculation(pace, paceUnit);
     } else {
-      setStoredPace(time / distance);
+      console.log('toggled to: ', distance, ' ', time);
+      distTimeCalculation(distance, distanceUnit, time);
     }
   };
-
-  paceValue(storedPace);
 
   return (
     <div className="flex w-full flex-col">
@@ -56,9 +97,9 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
           <span className="label-text">Pace</span>
           <TimeInput minutes seconds onChange={handlePaceInput} />
           <RadioGroup
-            options={['mile', 'kilometer']}
+            options={['min per mile', 'min per km']}
             name="pace"
-            onChange={() => {}}
+            onChange={handlePaceUnit}
           />
         </div>
         <Divider />
@@ -72,7 +113,7 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
           <RadioGroup
             options={['miles', 'kilometers']}
             name="distance"
-            onChange={() => {}}
+            onChange={handleDistanceUnit}
           />
         </div>
         <div
