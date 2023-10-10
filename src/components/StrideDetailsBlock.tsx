@@ -16,17 +16,17 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
   const handleStrideInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     let valueNum = parseFloat(value);
-    console.log('stride input: ', valueNum);
+    // console.log('stride input: ', valueNum);
     strideCalculation(valueNum, strideUnit);
   };
 
   const handleStrideUnit = (unit: string) => {
-    console.log('stride unit: ', unit);
+    // console.log('stride unit: ', unit);
     strideCalculation(stride, unit);
   };
 
   const strideCalculation = (value: number, unit: string) => {
-    console.log('logged info is: ', value, ' ', unit);
+    // console.log('logged info is: ', value, ' ', unit);
     if (unit === 'inches') {
       strideValue(value);
     } else {
@@ -39,17 +39,17 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
   const handleHeightInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     let valueNum = parseFloat(value);
-    console.log('height input: ', valueNum);
+    // console.log('height input: ', valueNum);
     heightCalculation(valueNum, heightUnit);
   };
 
   const handleHeightUnit = (unit: string) => {
-    console.log('height unit: ', unit);
+    // console.log('height unit: ', unit);
     heightCalculation(height, unit);
   };
 
   const heightCalculation = (value: number, unit: string) => {
-    console.log('logged info is: ', value, ' ', unit);
+    // console.log('logged info is: ', value, ' ', unit);
     if (unit === 'inches') {
       strideValue(heightToStride(value));
     } else {
@@ -63,10 +63,10 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
     setIsSecondHalfActive(!isSecondHalfActive);
 
     if (isSecondHalfActive) {
-      console.log('toggled to: ', stride);
+      // console.log('toggled to: ', stride);
       strideCalculation(stride, strideUnit);
     } else {
-      console.log('toggled to: ', height);
+      // console.log('toggled to: ', height);
       heightCalculation(height, heightUnit);
     }
   };

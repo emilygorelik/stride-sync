@@ -13,3 +13,7 @@ export function toInches(centimeters: number) {
 export function toMiles(kilometers: number) {
   return kilometers * 0.621371;
 }
+
+export function toMilesPerSec(kps: number) {
+  return kps * 1.609344;
+}
