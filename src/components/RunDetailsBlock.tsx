@@ -10,7 +10,7 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
   const [pace, setPace] = useState(0);
   const [distance, setDistance] = useState(0);
   const [time, setTime] = useState(0);
-  const [paceUnit, setPaceUnit] = useState('min per mile');
+  const [paceUnit, setPaceUnit] = useState('mile');
   const [distanceUnit, setDistanceUnit] = useState('miles');
   const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
 
