@@ -4,12 +4,12 @@ import { UserTokenContext, fetchPlaylists, fetchProfile } from '../api';
 import { calcBPM } from '../calculations';
 import {
   Card,
-  NumberInput,
   Playlist,
   RunDetailsBlock,
   StrideDetailsBlock,
   SubmitButton,
 } from '../components';
+import { BpmBlock } from '../components/bpmBlock';
 import { SpotifyPlaylists, SpotifyProfile } from '../types/SpotifyAPI';
 
 function Home() {
@@ -70,14 +70,17 @@ function Home() {
   const handleOverride = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     let valueNum = parseFloat(value);
-    if (isFinite(valueNum)) setBPMOverride(valueNum);
-    else setBPMOverride(bpm);
+    if (isFinite(valueNum)) {
+      setBPMOverride(valueNum);
+      console.log('now bpm used is: ', valueNum);
+    } else {
+      setBPMOverride(bpm);
+      console.log('now bpm used is: ', bpm);
+    }
   };
 
   function exportPlaylist() {
-    console.log('---------------export-----------------');
-    console.log('BPM override is: ', bpmOverride);
-    console.log('Calc bpm is: ', bpm);
+    console.log(`---------- export ${bpmOverride} ------------`);
   }
 
   return (
@@ -104,19 +107,11 @@ function Home() {
             Calculate BPM
           </SubmitButton>
           {bpm !== -1 && isFinite(bpm) && (
-            <div className="flex w-full flex-col items-center rounded-lg border-[1px] border-primary p-2">
-              <h3>Your Calculated BPM is {bpm}</h3>
-              <div className="flex items-center gap-4">
-                <label>Override Calculated BPM</label>
-                <NumberInput
-                  placeholder={bpmOverride.toString()}
-                  onChange={handleOverride}
-                />
-              </div>
-              <SubmitButton onClick={() => exportPlaylist()}>
-                Export Playlist
-              </SubmitButton>
-            </div>
+            <BpmBlock
+              bpm={bpm}
+              onChange={handleOverride}
+              onClick={exportPlaylist}
+            />
           )}
         </div>
       </div>
