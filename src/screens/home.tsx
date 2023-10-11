@@ -4,6 +4,7 @@ import { UserTokenContext, fetchPlaylists, fetchProfile } from '../api';
 import { calcBPM } from '../calculations';
 import {
   Card,
+  NumberInput,
   Playlist,
   RunDetailsBlock,
   StrideDetailsBlock,
@@ -19,7 +20,7 @@ function Home() {
 
   const [pace, setPace] = useState<number>(0);
   const [stride, setStride] = useState<number>(0);
-  const [bpm, setBPM] = useState<number>(0);
+  const [bpm, setBPM] = useState<number>(-1);
 
   useEffect(() => {
     async function fetchData() {
@@ -85,7 +86,15 @@ function Home() {
           <SubmitButton onClick={() => calcStrideSync()}>
             Calculate BPM
           </SubmitButton>
-          <h3>Your Calculated BPM is {bpm}</h3>
+          {bpm !== -1 && isFinite(bpm) && (
+            <div className="flex w-full flex-col items-center rounded-lg border-[1px] border-primary p-2">
+              <h3>Your Calculated BPM is {bpm}</h3>
+              <div className="flex items-center gap-4">
+                <label>Override Calculated BPM</label>
+                <NumberInput placeholder={bpm.toString()} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
