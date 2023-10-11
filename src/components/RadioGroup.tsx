@@ -17,7 +17,7 @@ export function RadioGroup({ options, name, onChange }: RadioGroupProps) {
   return (
     <div className="form-control my-2 w-fit gap-2">
       {options.map((option, index) => (
-        <label className="flex cursor-pointer justify-start" key={index}>
+        <p className="flex cursor-pointer justify-start" key={index}>
           <input
             type="radio"
             name={name}
@@ -26,7 +26,7 @@ export function RadioGroup({ options, name, onChange }: RadioGroupProps) {
             onChange={() => handleRadioChange(option)}
           />
           <span className="label-text">{option}</span>
-        </label>
+        </p>
       ))}
     </div>
   );

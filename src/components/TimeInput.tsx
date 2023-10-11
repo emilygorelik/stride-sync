@@ -51,7 +51,7 @@ export function TimeInput({
               onChange={handleHourChange}
               value={selectedHours}
             />
-            <label>hr</label>
+            <p>hr</p>
           </div>
           <h3>&nbsp;:&nbsp;</h3>
         </>
@@ -64,7 +64,7 @@ export function TimeInput({
               onChange={handleMinuteChange}
               value={selectedMinutes}
             />
-            <label>min</label>
+            <p>min</p>
           </div>
           <h3>&nbsp;:&nbsp;</h3>
         </>
@@ -76,7 +76,7 @@ export function TimeInput({
             onChange={handleSecondChange}
             value={selectedSeconds}
           />
-          <label>sec</label>
+          <p>sec</p>
         </div>
       )}
     </div>
