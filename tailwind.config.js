@@ -13,9 +13,7 @@ export default {
     themes: [
       {
         mytheme: {
-          primary: '#ed55d6',
-          secondary: '#0e2b93',
-          accent: '#fff45b',
+          primary: '#DDA0F5',
           neutral: '#161a1d',
           'base-100': '#482b4a',
           info: '#5ba8ec',

@@ -4,7 +4,7 @@ interface InfoProps {
 
 export function Info({ text }: InfoProps) {
   return (
-    <div className="dropdown dropdown-right dropdown-hover">
+    <div className="dropdown-right dropdown-hover dropdown">
       <svg
         tabIndex={0}
         xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +21,7 @@ export function Info({ text }: InfoProps) {
       </svg>
       <div
         tabIndex={0}
-        className="dropdown-content w-fit rounded bg-purple-300 p-1 text-black"
+        className="dropdown-content w-fit rounded bg-primary p-1 text-black"
       >
         {text}
       </div>
