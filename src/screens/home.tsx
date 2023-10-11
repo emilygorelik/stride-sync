@@ -17,6 +17,7 @@ function Home() {
   const { accessToken } = useContext(UserTokenContext);
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
+  const [selectedPlaylist, setSelectedPlaylist] = useState('');
 
   const [pace, setPace] = useState<number>(0);
   const [stride, setStride] = useState<number>(0);
@@ -43,9 +44,17 @@ function Home() {
     fetchData();
   }, [accessToken]);
 
+  useEffect(() => {
+    console.log('selected: ', selectedPlaylist);
+  }, [selectedPlaylist]);
+
   if (!profile || !playlists) {
     return <div>Loading...</div>;
   }
+
+  const handlePlaylistSelection = (playlistId: string) => {
+    setSelectedPlaylist(playlistId);
+  };
 
   const handleStrideChange = (value: number) => {
     setStride(value);
@@ -90,13 +99,31 @@ function Home() {
         <Card className="flex w-1/2">
           <h2>Select Playlist</h2>
           <div className="flex w-full flex-col gap-4 overflow-y-auto">
-            {playlists?.items?.map((playlist) => (
-              <Playlist
+            {playlists?.items?.map((playlist, index) => (
+              <div
                 key={playlist.id}
-                name={playlist.name}
-                imageURL={playlist.images[0].url}
-                numTracks={playlist.tracks.total}
-              />
+                className={`${
+                  selectedPlaylist === playlist.id ? 'bg-primary' : ''
+                }`}
+              >
+                <input
+                  type="radio"
+                  id={`playlist-${index}`}
+                  name="playlist-radio"
+                  className="hidden"
+                  value={playlist.id}
+                  checked={selectedPlaylist === playlist.id}
+                  onChange={() => handlePlaylistSelection(playlist.id)}
+                />
+                <label htmlFor={`playlist-${index}`}>
+                  <Playlist
+                    key={playlist.id}
+                    name={playlist.name}
+                    imageURL={playlist.images[0].url}
+                    numTracks={playlist.tracks.total}
+                  />
+                </label>
+              </div>
             ))}
           </div>
         </Card>

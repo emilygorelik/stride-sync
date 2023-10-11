@@ -31,6 +31,7 @@ export interface SpotifyPlaylist {
   tracks: {
     href: string;
     total: number;
+    items: any;
   };
   type: string;
   uri: string;
