@@ -9,3 +9,6 @@ export { StrideDetailsBlock } from './StrideDetailsBlock';
 export { SubmitButton } from './SubmitButton';
 export { TimeInput } from './TimeInput';
 export { Toggle } from './Toggle';
+
+//icons
+export { Info } from './icons/info';
