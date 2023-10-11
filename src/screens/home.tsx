@@ -54,14 +54,13 @@ function Home() {
   };
 
   function calcStrideSync() {
-    console.log('------------------------');
+    console.log('----------------------------------------------------');
     console.log('button clicked');
     console.log('recorded pace: ', pace, 'seconds per mile');
     console.log('recorded pace: ', pace / 60, 'minutes per mile');
     console.log('recorded stride: ', stride, ' inches');
-    setBPM(calcBPM(pace, stride));
     console.log('calculated BPM: ', calcBPM(pace, stride), ' steps per minute');
-    console.log('------------------------');
+    setBPM(calcBPM(pace, stride));
   }
 
   return (
@@ -84,7 +83,7 @@ function Home() {
           <RunDetailsBlock paceValue={handlePaceChange} />
           <StrideDetailsBlock strideValue={handleStrideChange} />
           <SubmitButton onClick={() => calcStrideSync()}>
-            Calculate StrideSync
+            Calculate BPM
           </SubmitButton>
           <h3>Your Calculated BPM is {bpm}</h3>
         </div>
