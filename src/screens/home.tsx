@@ -1,6 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserTokenContext, fetchPlaylists, fetchProfile } from '../api';
+import { calcBPM } from '../calculations';
 import {
   Card,
   Playlist,
@@ -8,6 +9,7 @@ import {
   StrideDetailsBlock,
   SubmitButton,
 } from '../components';
+import { BpmBlock } from '../components/bpmBlock';
 import { SpotifyPlaylists, SpotifyProfile } from '../types/SpotifyAPI';
 
 function Home() {
@@ -16,9 +18,10 @@ function Home() {
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
 
-  const [pace, setPace] = useState<number>();
-
-  const [stride, setStride] = useState<number>();
+  const [pace, setPace] = useState<number>(0);
+  const [stride, setStride] = useState<number>(0);
+  const [bpm, setBPM] = useState<number>(-1);
+  const [bpmOverride, setBPMOverride] = useState<number>(-1);
 
   useEffect(() => {
     async function fetchData() {
@@ -52,25 +55,44 @@ function Home() {
     setPace(value);
   };
 
-  function testing() {
-    console.log('------------------------');
+  function calcStrideSync() {
+    console.log('----------------------------------------------------');
     console.log('button clicked');
     console.log('recorded pace: ', pace, 'seconds per mile');
+    console.log('recorded pace: ', pace / 60, 'minutes per mile');
     console.log('recorded stride: ', stride, ' inches');
-    console.log('------------------------');
+    const calcBpm = calcBPM(pace, stride);
+    console.log('calculated BPM: ', calcBpm, ' steps per minute');
+    setBPM(calcBpm);
+    setBPMOverride(calcBpm);
+  }
+
+  const handleOverride = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    let valueNum = parseFloat(value);
+    if (isFinite(valueNum)) {
+      setBPMOverride(valueNum);
+      console.log('now bpm used is: ', valueNum);
+    } else {
+      setBPMOverride(bpm);
+      console.log('now bpm used is: ', bpm);
+    }
+  };
+
+  function exportPlaylist() {
+    console.log(`---------- export ${bpmOverride} ------------`);
   }
 
   return (
     <div className="m-auto flex h-screen w-3/4 flex-col items-center p-8">
-      <h1 className="text-3xl font-bold">
-        Spotify StrideSync- {profile.display_name}
-      </h1>
+      <h1>Spotify StrideSync- {profile.display_name}</h1>
       <div className="flex w-full gap-8 overflow-hidden px-4">
         <Card className="flex w-1/2">
           <h2>Select Playlist</h2>
           <div className="flex w-full flex-col gap-4 overflow-y-auto">
             {playlists?.items?.map((playlist) => (
               <Playlist
+                key={playlist.id}
                 name={playlist.name}
                 imageURL={playlist.images[0].url}
                 numTracks={playlist.tracks.total}
@@ -81,7 +103,16 @@ function Home() {
         <div className="flex w-1/2 flex-col items-center gap-4">
           <RunDetailsBlock paceValue={handlePaceChange} />
           <StrideDetailsBlock strideValue={handleStrideChange} />
-          <SubmitButton onClick={() => testing()}>Sync My Stride</SubmitButton>
+          <SubmitButton onClick={() => calcStrideSync()}>
+            Calculate BPM
+          </SubmitButton>
+          {bpm !== -1 && isFinite(bpm) && (
+            <BpmBlock
+              bpm={bpm}
+              onChange={handleOverride}
+              onClick={exportPlaylist}
+            />
+          )}
         </div>
       </div>
     </div>

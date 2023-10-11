@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { Divider, NumberInput, RadioGroup, Toggle } from '.';
+import { Divider, Info, NumberInput, RadioGroup, Toggle } from '.';
 import { heightToStride, toInches } from '../calculations';
 
 interface StrideDetailsBlockProps {
@@ -97,7 +97,9 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
             !isSecondHalfActive ? 'pointer-events-none opacity-50' : ''
           }`}
         >
-          <span className="label-text">Height</span>
+          <span className="label-text flex gap-1">
+            Height <Info text="calculation may be inaccurate" />
+          </span>
           <NumberInput placeholder="00.00" onChange={handleHeightInput} />
           <RadioGroup
             options={['inches', 'centimeters']}
