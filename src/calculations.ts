@@ -23,5 +23,5 @@ export function calcBPM(pace: number, stride: number) {
   // pace is in sec/mile
   // stride is in inch/step
   // left with step/min which is equivalent to beat/min
-  return (5280 * 12 * 60) / (pace * stride);
+  return Math.round((5280 * 12 * 60) / (pace * stride));
 }
