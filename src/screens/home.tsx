@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserTokenContext, fetchPlaylists, fetchProfile } from '../api';
+import { calcBPM } from '../calculations';
 import {
   Card,
   Playlist,
@@ -16,9 +17,8 @@ function Home() {
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
 
-  const [pace, setPace] = useState<number>();
-
-  const [stride, setStride] = useState<number>();
+  const [pace, setPace] = useState<number>(0);
+  const [stride, setStride] = useState<number>(0);
 
   useEffect(() => {
     async function fetchData() {
@@ -56,7 +56,10 @@ function Home() {
     console.log('------------------------');
     console.log('button clicked');
     console.log('recorded pace: ', pace, 'seconds per mile');
+    console.log('recorded pace: ', pace / 60, 'minutes per mile');
     console.log('recorded stride: ', stride, ' inches');
+    const bpm = calcBPM(pace, stride);
+    console.log('calculated BPM: ', bpm, ' steps per minute');
     console.log('------------------------');
   }
 
