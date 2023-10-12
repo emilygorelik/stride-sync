@@ -169,7 +169,7 @@ function Home() {
             ))}
           </div>
         </Card>
-        <div className="flex w-1/2 flex-col items-center gap-4 border-2">
+        <div className="flex w-1/2 flex-col items-center gap-4">
           <RunDetailsBlock paceValue={handlePaceChange} />
           <StrideDetailsBlock strideValue={handleStrideChange} />
           <SubmitButton onClick={() => calcStrideSync()}>
@@ -182,10 +182,10 @@ function Home() {
               onClick={exportPlaylist}
             />
           )}
-          <div className="overflow-y-scroll">
+          <div className="w-full overflow-y-auto rounded-lg border-[1px] border-primary p-2">
             <h3>Songs</h3>
             {playlistData?.map((song, index) => (
-              <p key={index} className="w-full px-8">
+              <p key={index}>
                 {index + 1}. {song.track.name} -
                 {Math.round(playlistFeatures[index].tempo)} BPM
               </p>
