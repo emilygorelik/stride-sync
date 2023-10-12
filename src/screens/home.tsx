@@ -1,6 +1,11 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserTokenContext, fetchPlaylists, fetchProfile } from '../api';
+import {
+  UserTokenContext,
+  fetchPlaylistData,
+  fetchPlaylists,
+  fetchProfile,
+} from '../api';
 import { calcBPM } from '../calculations';
 import {
   Card,
@@ -10,14 +15,18 @@ import {
   SubmitButton,
 } from '../components';
 import { BpmBlock } from '../components/bpmBlock';
-import { SpotifyPlaylists, SpotifyProfile } from '../types/SpotifyAPI';
+import {
+  SpotifyPlaylist,
+  SpotifyPlaylists,
+  SpotifyProfile,
+} from '../types/SpotifyAPI';
 
 function Home() {
   const navigate = useNavigate();
   const { accessToken } = useContext(UserTokenContext);
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
-  const [selectedPlaylist, setSelectedPlaylist] = useState('');
+  const [selectedPlaylist, setSelectedPlaylist] = useState<SpotifyPlaylist>();
 
   const [pace, setPace] = useState<number>(0);
   const [stride, setStride] = useState<number>(0);
@@ -33,7 +42,6 @@ function Home() {
           setProfile(userProfile);
           setPlaylists(userPlaylists);
         } catch (error) {
-          // Handle errors from the API call, e.g., token expired or invalid
           console.error('Error fetching user data:', error);
         }
       } else {
@@ -46,14 +54,25 @@ function Home() {
 
   useEffect(() => {
     console.log('selected: ', selectedPlaylist);
+    async function fetchPlaylists() {
+      if (accessToken && selectedPlaylist) {
+        const playlistData = await fetchPlaylistData(
+          accessToken,
+          selectedPlaylist.id,
+        );
+        console.log('playlist data: ', playlistData.tracks.items);
+      }
+    }
+
+    fetchPlaylists();
   }, [selectedPlaylist]);
 
   if (!profile || !playlists) {
     return <div>Loading...</div>;
   }
 
-  const handlePlaylistSelection = (playlistId: string) => {
-    setSelectedPlaylist(playlistId);
+  const handlePlaylistSelection = (playlist: SpotifyPlaylist) => {
+    setSelectedPlaylist(playlist);
   };
 
   const handleStrideChange = (value: number) => {
@@ -103,7 +122,7 @@ function Home() {
               <div
                 key={playlist.id}
                 className={`${
-                  selectedPlaylist === playlist.id ? 'bg-primary' : ''
+                  selectedPlaylist === playlist ? 'bg-primary' : ''
                 }`}
               >
                 <input
@@ -112,8 +131,8 @@ function Home() {
                   name="playlist-radio"
                   className="hidden"
                   value={playlist.id}
-                  checked={selectedPlaylist === playlist.id}
-                  onChange={() => handlePlaylistSelection(playlist.id)}
+                  checked={selectedPlaylist === playlist}
+                  onChange={() => handlePlaylistSelection(playlist)}
                 />
                 <label htmlFor={`playlist-${index}`}>
                   <Playlist

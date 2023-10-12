@@ -1,4 +1,9 @@
 import { ReactNode, createContext, useState } from 'react';
+import {
+  SpotifyPlaylist,
+  SpotifyPlaylists,
+  SpotifyProfile,
+} from './types/SpotifyAPI';
 
 export async function redirectToAuthCodeFlow(clientId: string) {
   const verifier = generateCodeVerifier(128);
@@ -68,7 +73,7 @@ export async function checkStoredAccessToken(): Promise<string | null> {
   return storedAccessToken;
 }
 
-export async function fetchProfile(token: string): Promise<any> {
+export async function fetchProfile(token: string): Promise<SpotifyProfile> {
   const result = await fetch('https://api.spotify.com/v1/me', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}` },
@@ -77,9 +82,24 @@ export async function fetchProfile(token: string): Promise<any> {
   return await result.json();
 }
 
-export async function fetchPlaylists(token: string): Promise<any> {
+export async function fetchPlaylists(token: string): Promise<SpotifyPlaylists> {
   const result = await fetch(
     'https://api.spotify.com/v1/me/playlists?limit=50&offset=0',
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
+
+  return await result.json();
+}
+
+export async function fetchPlaylistData(
+  token: string,
+  playlist_id: string,
+): Promise<SpotifyPlaylist> {
+  const result = await fetch(
+    `https://api.spotify.com/v1/playlists/${playlist_id}`,
     {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
