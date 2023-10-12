@@ -31,6 +31,7 @@ export interface SpotifyTrack {
   track: {
     id: string;
     name: string;
+    uri: string;
   };
 }
 

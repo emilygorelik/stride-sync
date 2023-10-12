@@ -190,7 +190,8 @@ function Home() {
             {playlistData?.map((song, index) => (
               <p key={index}>
                 {index + 1}. {song.track.name} -
-                {Math.round(playlistFeatures[index].tempo)} BPM
+                {Math.round(playlistFeatures[index].tempo)} BPM -
+                {song.track.uri}
               </p>
             ))}
           </div>

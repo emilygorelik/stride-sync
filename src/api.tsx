@@ -102,7 +102,7 @@ export async function fetchPlaylistData(
 ): Promise<SpotifyTrack[]> {
   //console.log('token: ', token);
   const result = await fetch(
-    `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?fields=items(track(name,id))&limit=100&offset=${offset}`,
+    `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?fields=items(track(name,id,uri))&limit=100&offset=${offset}`,
     {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
