@@ -60,6 +60,7 @@ function Home() {
   }, [accessToken]);
 
   useEffect(() => {
+    // TODO: move out of use effect and on button press for export
     async function fetchPlaylists() {
       if (accessToken && selectedPlaylist) {
         const totalSongs = selectedPlaylist.tracks.total;
@@ -148,6 +149,7 @@ function Home() {
                   selectedPlaylist === playlist ? 'bg-primary' : ''
                 }`}
               >
+                {/* TODO: make into component */}
                 <input
                   type="radio"
                   id={`playlist-${index}`}
@@ -182,6 +184,7 @@ function Home() {
               onClick={exportPlaylist}
             />
           )}
+          {/* temperary div below for easy testing */}
           <div className="w-full overflow-y-auto rounded-lg border-[1px] border-primary p-2">
             <h3>Songs</h3>
             {playlistData?.map((song, index) => (
