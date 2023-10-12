@@ -19,6 +19,7 @@ import {
   SpotifyPlaylist,
   SpotifyPlaylists,
   SpotifyProfile,
+  SpotifyTrack,
 } from '../types/SpotifyAPI';
 
 function Home() {
@@ -27,7 +28,7 @@ function Home() {
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
   const [selectedPlaylist, setSelectedPlaylist] = useState<SpotifyPlaylist>();
-  const [playlistData, setPlaylistData] = useState([]);
+  const [playlistData, setPlaylistData] = useState<SpotifyTrack[]>([]);
 
   const [pace, setPace] = useState<number>(0);
   const [stride, setStride] = useState<number>(0);
@@ -54,17 +55,23 @@ function Home() {
   }, [accessToken]);
 
   useEffect(() => {
-    console.log('selected: ', selectedPlaylist);
     async function fetchPlaylists() {
       if (accessToken && selectedPlaylist) {
-        const playlistData = await fetchPlaylistData(
-          accessToken,
-          selectedPlaylist.id,
-        );
-        console.log('playlist data: ', playlistData);
-        playlistData.forEach((song) => {
-          console.log(song.track.name, ' ', song.track.id);
-        });
+        const totalSongs = selectedPlaylist.tracks.total;
+        let offset = 0;
+        let allSongs: SpotifyTrack[] = [];
+
+        while (offset < totalSongs) {
+          const playlistChunk = await fetchPlaylistData(
+            accessToken,
+            selectedPlaylist.id,
+            offset,
+          );
+          allSongs = [...allSongs, ...playlistChunk];
+          offset += playlistChunk.length;
+        }
+
+        setPlaylistData(allSongs);
       }
     }
 
@@ -88,13 +95,13 @@ function Home() {
   };
 
   function calcStrideSync() {
-    console.log('----------------------------------------------------');
-    console.log('button clicked');
-    console.log('recorded pace: ', pace, 'seconds per mile');
-    console.log('recorded pace: ', pace / 60, 'minutes per mile');
-    console.log('recorded stride: ', stride, ' inches');
+    // console.log('----------------------------------------------------');
+    // console.log('button clicked');
+    // console.log('recorded pace: ', pace, 'seconds per mile');
+    // console.log('recorded pace: ', pace / 60, 'minutes per mile');
+    // console.log('recorded stride: ', stride, ' inches');
     const calcBpm = calcBPM(pace, stride);
-    console.log('calculated BPM: ', calcBpm, ' steps per minute');
+    // console.log('calculated BPM: ', calcBpm, ' steps per minute');
     setBPM(calcBpm);
     setBPMOverride(calcBpm);
   }
@@ -104,10 +111,8 @@ function Home() {
     let valueNum = parseFloat(value);
     if (isFinite(valueNum)) {
       setBPMOverride(valueNum);
-      console.log('now bpm used is: ', valueNum);
     } else {
       setBPMOverride(bpm);
-      console.log('now bpm used is: ', bpm);
     }
   };
 
@@ -150,7 +155,7 @@ function Home() {
             ))}
           </div>
         </Card>
-        <div className="flex w-1/2 flex-col items-center gap-4">
+        <div className="flex w-1/2 flex-col items-center gap-4 border-2">
           <RunDetailsBlock paceValue={handlePaceChange} />
           <StrideDetailsBlock strideValue={handleStrideChange} />
           <SubmitButton onClick={() => calcStrideSync()}>
@@ -163,6 +168,14 @@ function Home() {
               onClick={exportPlaylist}
             />
           )}
+          <div className="overflow-y-scroll">
+            <h3>Songs</h3>
+            {playlistData?.map((song, index) => (
+              <p key={index} className="w-full px-8">
+                {index + 1}. {song.track.name}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     </div>
