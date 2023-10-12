@@ -2,6 +2,7 @@ import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   UserTokenContext,
+  fetchAudioFeatures,
   fetchPlaylistData,
   fetchPlaylists,
   fetchProfile,
@@ -16,6 +17,7 @@ import {
 } from '../components';
 import { BpmBlock } from '../components/bpmBlock';
 import {
+  SpotifyAudioFeatures,
   SpotifyPlaylist,
   SpotifyPlaylists,
   SpotifyProfile,
@@ -29,6 +31,9 @@ function Home() {
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
   const [selectedPlaylist, setSelectedPlaylist] = useState<SpotifyPlaylist>();
   const [playlistData, setPlaylistData] = useState<SpotifyTrack[]>([]);
+  const [playlistFeatures, setPlaylistFeatures] = useState<
+    SpotifyAudioFeatures[]
+  >([]);
 
   const [pace, setPace] = useState<number>(0);
   const [stride, setStride] = useState<number>(0);
@@ -60,18 +65,27 @@ function Home() {
         const totalSongs = selectedPlaylist.tracks.total;
         let offset = 0;
         let allSongs: SpotifyTrack[] = [];
+        let allSongsFeatures: SpotifyAudioFeatures[] = [];
 
         while (offset < totalSongs) {
+          //get chunk of songs
           const playlistChunk = await fetchPlaylistData(
             accessToken,
             selectedPlaylist.id,
             offset,
           );
+          //get bpm data for the chunk
+          const chunkIds = playlistChunk.map((item) => item.track.id);
+          const chunkFeatures = await fetchAudioFeatures(accessToken, chunkIds);
+          console.log('chunk features', chunkFeatures);
+
           allSongs = [...allSongs, ...playlistChunk];
+          allSongsFeatures = [...allSongsFeatures, ...chunkFeatures];
           offset += playlistChunk.length;
         }
 
         setPlaylistData(allSongs);
+        setPlaylistFeatures(allSongsFeatures);
       }
     }
 
@@ -172,7 +186,7 @@ function Home() {
             <h3>Songs</h3>
             {playlistData?.map((song, index) => (
               <p key={index} className="w-full px-8">
-                {index + 1}. {song.track.name}
+                {index + 1}. {song.track.name} - {playlistFeatures[index].tempo}
               </p>
             ))}
           </div>

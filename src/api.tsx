@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useState } from 'react';
 import {
+  SpotifyAudioFeatures,
   SpotifyPlaylists,
   SpotifyProfile,
   SpotifyTrack,
@@ -109,6 +110,21 @@ export async function fetchPlaylistData(
   );
 
   return (await result.json()).items;
+}
+
+export async function fetchAudioFeatures(
+  token: string,
+  songArray: string[],
+): Promise<SpotifyAudioFeatures[]> {
+  const result = await fetch(
+    `https://api.spotify.com/v1/audio-features?ids=${songArray.join()}`,
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
+
+  return (await result.json()).audio_features;
 }
 
 type UserTokenContextType = {
