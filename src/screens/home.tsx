@@ -27,6 +27,7 @@ function Home() {
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
   const [selectedPlaylist, setSelectedPlaylist] = useState<SpotifyPlaylist>();
+  const [playlistData, setPlaylistData] = useState([]);
 
   const [pace, setPace] = useState<number>(0);
   const [stride, setStride] = useState<number>(0);
@@ -60,7 +61,10 @@ function Home() {
           accessToken,
           selectedPlaylist.id,
         );
-        console.log('playlist data: ', playlistData.tracks.items);
+        console.log('playlist data: ', playlistData);
+        playlistData.forEach((song) => {
+          console.log(song.track.name, ' ', song.track.id);
+        });
       }
     }
 

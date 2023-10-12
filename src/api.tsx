@@ -1,8 +1,8 @@
 import { ReactNode, createContext, useState } from 'react';
 import {
-  SpotifyPlaylist,
   SpotifyPlaylists,
   SpotifyProfile,
+  SpotifyTrack,
 } from './types/SpotifyAPI';
 
 export async function redirectToAuthCodeFlow(clientId: string) {
@@ -97,16 +97,17 @@ export async function fetchPlaylists(token: string): Promise<SpotifyPlaylists> {
 export async function fetchPlaylistData(
   token: string,
   playlist_id: string,
-): Promise<SpotifyPlaylist> {
+): Promise<SpotifyTrack[]> {
+  console.log('token: ', token);
   const result = await fetch(
-    `https://api.spotify.com/v1/playlists/${playlist_id}`,
+    `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?fields=items(track(name,id))&limit=100&offset=0`,
     {
       method: 'GET',
       headers: { Authorization: `Bearer ${token}` },
     },
   );
 
-  return await result.json();
+  return (await result.json()).items;
 }
 
 type UserTokenContextType = {
