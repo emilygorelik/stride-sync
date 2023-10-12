@@ -1,4 +1,10 @@
 import { ReactNode, createContext, useState } from 'react';
+import {
+  SpotifyAudioFeatures,
+  SpotifyPlaylists,
+  SpotifyProfile,
+  SpotifyTrack,
+} from './types/SpotifyAPI';
 
 export async function redirectToAuthCodeFlow(clientId: string) {
   const verifier = generateCodeVerifier(128);
@@ -68,7 +74,7 @@ export async function checkStoredAccessToken(): Promise<string | null> {
   return storedAccessToken;
 }
 
-export async function fetchProfile(token: string): Promise<any> {
+export async function fetchProfile(token: string): Promise<SpotifyProfile> {
   const result = await fetch('https://api.spotify.com/v1/me', {
     method: 'GET',
     headers: { Authorization: `Bearer ${token}` },
@@ -77,7 +83,7 @@ export async function fetchProfile(token: string): Promise<any> {
   return await result.json();
 }
 
-export async function fetchPlaylists(token: string): Promise<any> {
+export async function fetchPlaylists(token: string): Promise<SpotifyPlaylists> {
   const result = await fetch(
     'https://api.spotify.com/v1/me/playlists?limit=50&offset=0',
     {
@@ -87,6 +93,38 @@ export async function fetchPlaylists(token: string): Promise<any> {
   );
 
   return await result.json();
+}
+
+export async function fetchPlaylistData(
+  token: string,
+  playlist_id: string,
+  offset: number,
+): Promise<SpotifyTrack[]> {
+  //console.log('token: ', token);
+  const result = await fetch(
+    `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?fields=items(track(name,id))&limit=100&offset=${offset}`,
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
+
+  return (await result.json()).items;
+}
+
+export async function fetchAudioFeatures(
+  token: string,
+  songArray: string[],
+): Promise<SpotifyAudioFeatures[]> {
+  const result = await fetch(
+    `https://api.spotify.com/v1/audio-features?ids=${songArray.join()}`,
+    {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
+
+  return (await result.json()).audio_features;
 }
 
 type UserTokenContextType = {

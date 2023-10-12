@@ -6,7 +6,7 @@ interface PlaylistProps {
 
 export function Playlist({ name, imageURL, numTracks }: PlaylistProps) {
   return (
-    <div className="flex w-full hover:cursor-pointer">
+    <div className="flex w-full items-center hover:cursor-pointer">
       <div className="w-1/6">
         <img src={imageURL} alt="" />
       </div>

@@ -1,6 +1,12 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserTokenContext, fetchPlaylists, fetchProfile } from '../api';
+import {
+  UserTokenContext,
+  fetchAudioFeatures,
+  fetchPlaylistData,
+  fetchPlaylists,
+  fetchProfile,
+} from '../api';
 import { calcBPM } from '../calculations';
 import {
   Card,
@@ -10,13 +16,24 @@ import {
   SubmitButton,
 } from '../components';
 import { BpmBlock } from '../components/bpmBlock';
-import { SpotifyPlaylists, SpotifyProfile } from '../types/SpotifyAPI';
+import {
+  SpotifyAudioFeatures,
+  SpotifyPlaylist,
+  SpotifyPlaylists,
+  SpotifyProfile,
+  SpotifyTrack,
+} from '../types/SpotifyAPI';
 
 function Home() {
   const navigate = useNavigate();
   const { accessToken } = useContext(UserTokenContext);
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
+  const [selectedPlaylist, setSelectedPlaylist] = useState<SpotifyPlaylist>();
+  const [playlistData, setPlaylistData] = useState<SpotifyTrack[]>([]);
+  const [playlistFeatures, setPlaylistFeatures] = useState<
+    SpotifyAudioFeatures[]
+  >([]);
 
   const [pace, setPace] = useState<number>(0);
   const [stride, setStride] = useState<number>(0);
@@ -32,7 +49,6 @@ function Home() {
           setProfile(userProfile);
           setPlaylists(userPlaylists);
         } catch (error) {
-          // Handle errors from the API call, e.g., token expired or invalid
           console.error('Error fetching user data:', error);
         }
       } else {
@@ -43,9 +59,47 @@ function Home() {
     fetchData();
   }, [accessToken]);
 
+  useEffect(() => {
+    // TODO: move out of use effect and on button press for export
+    async function fetchPlaylists() {
+      if (accessToken && selectedPlaylist) {
+        const totalSongs = selectedPlaylist.tracks.total;
+        let offset = 0;
+        let allSongs: SpotifyTrack[] = [];
+        let allSongsFeatures: SpotifyAudioFeatures[] = [];
+
+        while (offset < totalSongs) {
+          //get chunk of songs
+          const playlistChunk = await fetchPlaylistData(
+            accessToken,
+            selectedPlaylist.id,
+            offset,
+          );
+          //get bpm data for the chunk
+          const chunkIds = playlistChunk.map((item) => item.track.id);
+          const chunkFeatures = await fetchAudioFeatures(accessToken, chunkIds);
+
+          //store
+          allSongs = [...allSongs, ...playlistChunk];
+          allSongsFeatures = [...allSongsFeatures, ...chunkFeatures];
+          offset += playlistChunk.length;
+        }
+
+        setPlaylistData(allSongs);
+        setPlaylistFeatures(allSongsFeatures);
+      }
+    }
+
+    fetchPlaylists();
+  }, [selectedPlaylist]);
+
   if (!profile || !playlists) {
     return <div>Loading...</div>;
   }
+
+  const handlePlaylistSelection = (playlist: SpotifyPlaylist) => {
+    setSelectedPlaylist(playlist);
+  };
 
   const handleStrideChange = (value: number) => {
     setStride(value);
@@ -56,13 +110,13 @@ function Home() {
   };
 
   function calcStrideSync() {
-    console.log('----------------------------------------------------');
-    console.log('button clicked');
-    console.log('recorded pace: ', pace, 'seconds per mile');
-    console.log('recorded pace: ', pace / 60, 'minutes per mile');
-    console.log('recorded stride: ', stride, ' inches');
+    // console.log('----------------------------------------------------');
+    // console.log('button clicked');
+    // console.log('recorded pace: ', pace, 'seconds per mile');
+    // console.log('recorded pace: ', pace / 60, 'minutes per mile');
+    // console.log('recorded stride: ', stride, ' inches');
     const calcBpm = calcBPM(pace, stride);
-    console.log('calculated BPM: ', calcBpm, ' steps per minute');
+    // console.log('calculated BPM: ', calcBpm, ' steps per minute');
     setBPM(calcBpm);
     setBPMOverride(calcBpm);
   }
@@ -72,10 +126,8 @@ function Home() {
     let valueNum = parseFloat(value);
     if (isFinite(valueNum)) {
       setBPMOverride(valueNum);
-      console.log('now bpm used is: ', valueNum);
     } else {
       setBPMOverride(bpm);
-      console.log('now bpm used is: ', bpm);
     }
   };
 
@@ -90,13 +142,32 @@ function Home() {
         <Card className="flex w-1/2">
           <h2>Select Playlist</h2>
           <div className="flex w-full flex-col gap-4 overflow-y-auto">
-            {playlists?.items?.map((playlist) => (
-              <Playlist
+            {playlists?.items?.map((playlist, index) => (
+              <div
                 key={playlist.id}
-                name={playlist.name}
-                imageURL={playlist.images[0].url}
-                numTracks={playlist.tracks.total}
-              />
+                className={`${
+                  selectedPlaylist === playlist ? 'bg-primary' : ''
+                }`}
+              >
+                {/* TODO: make into component */}
+                <input
+                  type="radio"
+                  id={`playlist-${index}`}
+                  name="playlist-radio"
+                  className="hidden"
+                  value={playlist.id}
+                  checked={selectedPlaylist === playlist}
+                  onChange={() => handlePlaylistSelection(playlist)}
+                />
+                <label htmlFor={`playlist-${index}`}>
+                  <Playlist
+                    key={playlist.id}
+                    name={playlist.name}
+                    imageURL={playlist.images[0].url}
+                    numTracks={playlist.tracks.total}
+                  />
+                </label>
+              </div>
             ))}
           </div>
         </Card>
@@ -113,6 +184,16 @@ function Home() {
               onClick={exportPlaylist}
             />
           )}
+          {/* temperary div below for easy testing */}
+          <div className="w-full overflow-y-auto rounded-lg border-[1px] border-primary p-2">
+            <h3>Songs</h3>
+            {playlistData?.map((song, index) => (
+              <p key={index}>
+                {index + 1}. {song.track.name} -
+                {Math.round(playlistFeatures[index].tempo)} BPM
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     </div>
