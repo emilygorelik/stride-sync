@@ -77,8 +77,8 @@ function Home() {
           //get bpm data for the chunk
           const chunkIds = playlistChunk.map((item) => item.track.id);
           const chunkFeatures = await fetchAudioFeatures(accessToken, chunkIds);
-          console.log('chunk features', chunkFeatures);
 
+          //store
           allSongs = [...allSongs, ...playlistChunk];
           allSongsFeatures = [...allSongsFeatures, ...chunkFeatures];
           offset += playlistChunk.length;
