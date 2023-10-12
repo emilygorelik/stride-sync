@@ -132,10 +132,15 @@ function Home() {
     }
   };
 
-  function exportPlaylist() {
+  async function exportPlaylist() {
     console.log(`---------- export ${bpmOverride} ------------`);
     if (accessToken && profile) {
-      createPlaylist(accessToken, profile.id, 'STYRIDESYNC');
+      const newPlaylist = await createPlaylist(
+        accessToken,
+        profile.id,
+        `STYRIDESYNC- ${bpmOverride} BPM`,
+      );
+      console.log(newPlaylist.name, ' ', newPlaylist.id);
     }
   }
 
@@ -167,7 +172,7 @@ function Home() {
                   <Playlist
                     key={playlist.id}
                     name={playlist.name}
-                    imageURL={playlist.images[0].url}
+                    imageURL={playlist.images[0] ? playlist.images[0].url : ''}
                     numTracks={playlist.tracks.total}
                   />
                 </label>

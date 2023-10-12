@@ -1,6 +1,7 @@
 import { ReactNode, createContext, useState } from 'react';
 import {
   SpotifyAudioFeatures,
+  SpotifyPlaylist,
   SpotifyPlaylists,
   SpotifyProfile,
   SpotifyTrack,
@@ -134,16 +135,21 @@ export async function createPlaylist(
   token: string,
   user_id: string,
   playlist_name: string,
-) {
-  await fetch(`https://api.spotify.com/v1/users/${user_id}/playlists`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
-    body: JSON.stringify({
-      name: playlist_name,
-      description: 'Created by StrideSync',
-      public: true,
-    }),
-  });
+): Promise<SpotifyPlaylist> {
+  const result = await fetch(
+    `https://api.spotify.com/v1/users/${user_id}/playlists`,
+    {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify({
+        name: playlist_name,
+        description: 'Created by StrideSync',
+        public: true,
+      }),
+    },
+  );
+
+  return await result.json();
 }
 
 type UserTokenContextType = {
