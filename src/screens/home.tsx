@@ -2,6 +2,7 @@ import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   UserTokenContext,
+  createPlaylist,
   fetchAudioFeatures,
   fetchPlaylistData,
   fetchPlaylists,
@@ -133,6 +134,9 @@ function Home() {
 
   function exportPlaylist() {
     console.log(`---------- export ${bpmOverride} ------------`);
+    if (accessToken && profile) {
+      createPlaylist(accessToken, profile.id, 'STYRIDESYNC');
+    }
   }
 
   return (
