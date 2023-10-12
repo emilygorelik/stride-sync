@@ -186,7 +186,8 @@ function Home() {
             <h3>Songs</h3>
             {playlistData?.map((song, index) => (
               <p key={index} className="w-full px-8">
-                {index + 1}. {song.track.name} - {playlistFeatures[index].tempo}
+                {index + 1}. {song.track.name} -
+                {Math.round(playlistFeatures[index].tempo)} BPM
               </p>
             ))}
           </div>
