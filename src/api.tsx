@@ -152,6 +152,25 @@ export async function createPlaylist(
   return await result.json();
 }
 
+export async function addSongs(
+  token: string,
+  playlist_id: string,
+  songs: string[],
+): Promise<SpotifyPlaylist> {
+  const result = await fetch(
+    `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`,
+    {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify({
+        uris: songs,
+      }),
+    },
+  );
+
+  return await result.json();
+}
+
 type UserTokenContextType = {
   accessToken: string | undefined;
   loginWithSpotify: (code?: string) => void;

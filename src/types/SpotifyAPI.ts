@@ -36,5 +36,7 @@ export interface SpotifyTrack {
 }
 
 export interface SpotifyAudioFeatures {
+  id: string;
   tempo: number;
+  uri: string;
 }
