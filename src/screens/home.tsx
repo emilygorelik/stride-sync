@@ -133,7 +133,7 @@ function Home() {
       const newPlaylist = await createPlaylist(
         accessToken,
         profile.id,
-        `STYRIDESYNC- ${bpmOverride} BPM`,
+        `StrideSync- ${bpmOverride} BPM`,
       );
       //console.log(newPlaylist.name, ' ', newPlaylist.id);
 
