@@ -19,7 +19,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
   params.append('redirect_uri', 'http://localhost:5173/callback');
   params.append(
     'scope',
-    'user-read-private user-read-email playlist-modify-public',
+    'user-read-private user-read-email playlist-modify-public playlist-read-private',
   );
   params.append('code_challenge_method', 'S256');
   params.append('code_challenge', challenge);
