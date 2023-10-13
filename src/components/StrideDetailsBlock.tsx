@@ -15,7 +15,7 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
 
   const handleStrideInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    let valueNum = parseFloat(value);
+    const valueNum = parseFloat(value);
     // console.log('stride input: ', valueNum);
     strideCalculation(valueNum, strideUnit);
   };
@@ -38,7 +38,7 @@ export function StrideDetailsBlock({ strideValue }: StrideDetailsBlockProps) {
 
   const handleHeightInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    let valueNum = parseFloat(value);
+    const valueNum = parseFloat(value);
     // console.log('height input: ', valueNum);
     heightCalculation(valueNum, heightUnit);
   };

@@ -29,7 +29,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
 
 function generateCodeVerifier(length: number) {
   let text = '';
-  let possible =
+  const possible =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
   for (let i = 0; i < length; i++) {
@@ -190,7 +190,7 @@ export function UserTokenProvider({ children }: { children: ReactNode }) {
     if (!code) {
       redirectToAuthCodeFlow(clientId);
     } else {
-      let access = await getAccessToken(clientId, code);
+      const access = await getAccessToken(clientId, code);
       if (access) setAccessToken(access);
     }
   }
