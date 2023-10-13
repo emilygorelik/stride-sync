@@ -138,13 +138,14 @@ function Home() {
       //console.log(newPlaylist.name, ' ', newPlaylist.id);
 
       const filteredSongs = playlistFeatures
-        .filter((feature) => Math.abs(feature.tempo - bpm) <= 3)
+        .filter((feature) => Math.abs(feature.tempo - bpmOverride) <= 3)
         .map((feature) => feature.uri);
 
       console.log(filteredSongs);
 
       // add stored playlist to new playlist
       await addSongs(accessToken, newPlaylist.id, filteredSongs);
+      //add cover image
     }
   }
 
