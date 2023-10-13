@@ -37,7 +37,7 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
 
   const handleDistanceInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    let valueNum = parseFloat(value);
+    const valueNum = parseFloat(value);
     // console.log('dist input: ', valueNum);
     distTimeCalculation(valueNum, distanceUnit, time);
   };

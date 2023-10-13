@@ -119,7 +119,7 @@ function Home() {
 
   const handleOverride = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    let valueNum = parseFloat(value);
+    const valueNum = parseFloat(value);
     if (isFinite(valueNum)) {
       setBPMOverride(valueNum);
     } else {
