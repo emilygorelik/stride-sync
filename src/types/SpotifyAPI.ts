@@ -31,9 +31,12 @@ export interface SpotifyTrack {
   track: {
     id: string;
     name: string;
+    uri: string;
   };
 }
 
 export interface SpotifyAudioFeatures {
+  id: string;
   tempo: number;
+  uri: string;
 }

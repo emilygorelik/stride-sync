@@ -2,6 +2,8 @@ import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   UserTokenContext,
+  addSongs,
+  createPlaylist,
   fetchAudioFeatures,
   fetchPlaylistData,
   fetchPlaylists,
@@ -21,7 +23,6 @@ import {
   SpotifyPlaylist,
   SpotifyPlaylists,
   SpotifyProfile,
-  SpotifyTrack,
 } from '../types/SpotifyAPI';
 
 function Home() {
@@ -30,7 +31,6 @@ function Home() {
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
   const [selectedPlaylist, setSelectedPlaylist] = useState<SpotifyPlaylist>();
-  const [playlistData, setPlaylistData] = useState<SpotifyTrack[]>([]);
   const [playlistFeatures, setPlaylistFeatures] = useState<
     SpotifyAudioFeatures[]
   >([]);
@@ -60,12 +60,10 @@ function Home() {
   }, [accessToken]);
 
   useEffect(() => {
-    // TODO: move out of use effect and on button press for export
     async function fetchPlaylists() {
       if (accessToken && selectedPlaylist) {
         const totalSongs = selectedPlaylist.tracks.total;
         let offset = 0;
-        let allSongs: SpotifyTrack[] = [];
         let allSongsFeatures: SpotifyAudioFeatures[] = [];
 
         while (offset < totalSongs) {
@@ -80,13 +78,11 @@ function Home() {
           const chunkFeatures = await fetchAudioFeatures(accessToken, chunkIds);
 
           //store
-          allSongs = [...allSongs, ...playlistChunk];
           allSongsFeatures = [...allSongsFeatures, ...chunkFeatures];
           offset += playlistChunk.length;
         }
-
-        setPlaylistData(allSongs);
         setPlaylistFeatures(allSongsFeatures);
+        console.log(allSongsFeatures);
       }
     }
 
@@ -131,8 +127,25 @@ function Home() {
     }
   };
 
-  function exportPlaylist() {
-    console.log(`---------- export ${bpmOverride} ------------`);
+  async function exportPlaylist() {
+    if (accessToken && profile) {
+      // create new spotify playlist
+      const newPlaylist = await createPlaylist(
+        accessToken,
+        profile.id,
+        `STYRIDESYNC- ${bpmOverride} BPM`,
+      );
+      //console.log(newPlaylist.name, ' ', newPlaylist.id);
+
+      const filteredSongs = playlistFeatures
+        .filter((feature) => Math.abs(feature.tempo - bpm) <= 3)
+        .map((feature) => feature.uri);
+
+      console.log(filteredSongs);
+
+      // add stored playlist to new playlist
+      await addSongs(accessToken, newPlaylist.id, filteredSongs);
+    }
   }
 
   return (
@@ -163,7 +176,7 @@ function Home() {
                   <Playlist
                     key={playlist.id}
                     name={playlist.name}
-                    imageURL={playlist.images[0].url}
+                    imageURL={playlist.images[0] ? playlist.images[0].url : ''}
                     numTracks={playlist.tracks.total}
                   />
                 </label>
@@ -184,16 +197,6 @@ function Home() {
               onClick={exportPlaylist}
             />
           )}
-          {/* temperary div below for easy testing */}
-          <div className="w-full overflow-y-auto rounded-lg border-[1px] border-primary p-2">
-            <h3>Songs</h3>
-            {playlistData?.map((song, index) => (
-              <p key={index}>
-                {index + 1}. {song.track.name} -
-                {Math.round(playlistFeatures[index].tempo)} BPM
-              </p>
-            ))}
-          </div>
         </div>
       </div>
     </div>
