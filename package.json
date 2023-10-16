@@ -1,5 +1,5 @@
 {
-  "name": "spotify-running-playlist-app",
+  "name": "stride-sync",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,11 +7,17 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\"",
     "preview": "vite preview"
   },
   "dependencies": {
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.30",
+    "prettier-plugin-organize-imports": "^3.2.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-query": "^3.39.3",
+    "react-router-dom": "^6.16.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
@@ -19,9 +25,13 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
+    "daisyui": "^3.8.0",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.5",
+    "tailwindcss": "^3.3.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
   }
