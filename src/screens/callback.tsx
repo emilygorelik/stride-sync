@@ -1,15 +1,17 @@
 import { useContext, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { UserTokenContext } from '../api';
+import Home from './home';
 
 function Callback() {
   const [searchParams] = useSearchParams();
   const { loginWithSpotify, accessToken } = useContext(UserTokenContext);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   useEffect(() => {
     if (accessToken) {
-      navigate('/home');
+      //navigate('/home');
+      console.log(accessToken);
     }
   }, [accessToken]);
 
@@ -20,11 +22,7 @@ function Callback() {
     }
   }
 
-  return (
-    <div>
-      <span>Loading access token...</span>
-    </div>
-  );
+  return <Home />;
 }
 
 export default Callback;

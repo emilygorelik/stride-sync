@@ -1,5 +1,4 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   UserTokenContext,
   addSongs,
@@ -26,7 +25,7 @@ import {
 } from '../types/SpotifyAPI';
 
 function Home() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { accessToken } = useContext(UserTokenContext);
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
@@ -51,9 +50,10 @@ function Home() {
         } catch (error) {
           console.error('Error fetching user data:', error);
         }
-      } else {
-        navigate('/');
       }
+      // else {
+      //   navigate('/');
+      // }
     }
 
     fetchData();
