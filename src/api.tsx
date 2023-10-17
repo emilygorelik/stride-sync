@@ -7,6 +7,12 @@ import {
   SpotifyTrack,
 } from './types/SpotifyAPI';
 
+const isProd = true;
+let rootURL = '';
+
+if (isProd) rootURL = 'https://emgore-jg.github.io/stride-sync';
+else rootURL = 'http://localhost:5173';
+
 export async function redirectToAuthCodeFlow(clientId: string) {
   const verifier = generateCodeVerifier(128);
   const challenge = await generateCodeChallenge(verifier);
@@ -16,10 +22,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
   const params = new URLSearchParams();
   params.append('client_id', clientId);
   params.append('response_type', 'code');
-  params.append(
-    'redirect_uri',
-    'https://emgore-jg.github.io/stride-sync/callback',
-  );
+  params.append('redirect_uri', `${rootURL}/callback`);
   params.append(
     'scope',
     'user-read-private user-read-email playlist-modify-public playlist-read-private',
@@ -60,10 +63,7 @@ export async function getAccessToken(
   params.append('client_id', clientId);
   params.append('grant_type', 'authorization_code');
   params.append('code', code);
-  params.append(
-    'redirect_uri',
-    'https://emgore-jg.github.io/stride-sync/callback',
-  );
+  params.append('redirect_uri', `${rootURL}/callback`);
   params.append('code_verifier', verifier!);
 
   const result = await fetch('https://accounts.spotify.com/api/token', {
