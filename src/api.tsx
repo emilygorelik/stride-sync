@@ -7,6 +7,12 @@ import {
   SpotifyTrack,
 } from './types/SpotifyAPI';
 
+const isProd = false;
+let redirectURL = '';
+
+if (isProd) redirectURL = 'https://emgore-jg.github.io/stride-sync';
+else redirectURL = 'http://localhost:5173';
+
 export async function redirectToAuthCodeFlow(clientId: string) {
   const verifier = generateCodeVerifier(128);
   const challenge = await generateCodeChallenge(verifier);
@@ -16,7 +22,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
   const params = new URLSearchParams();
   params.append('client_id', clientId);
   params.append('response_type', 'code');
-  params.append('redirect_uri', 'http://localhost:5173/callback');
+  params.append('redirect_uri', `${redirectURL}`);
   params.append(
     'scope',
     'user-read-private user-read-email playlist-modify-public playlist-read-private',
@@ -57,7 +63,7 @@ export async function getAccessToken(
   params.append('client_id', clientId);
   params.append('grant_type', 'authorization_code');
   params.append('code', code);
-  params.append('redirect_uri', 'http://localhost:5173/callback');
+  params.append('redirect_uri', `${redirectURL}`);
   params.append('code_verifier', verifier!);
 
   const result = await fetch('https://accounts.spotify.com/api/token', {
@@ -104,7 +110,6 @@ export async function fetchPlaylistData(
   playlist_id: string,
   offset: number,
 ): Promise<SpotifyTrack[]> {
-  //console.log('token: ', token);
   const result = await fetch(
     `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?fields=items(track(name,id,uri))&limit=100&offset=${offset}`,
     {
