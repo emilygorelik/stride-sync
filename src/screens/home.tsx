@@ -10,13 +10,13 @@ import {
 } from '../api';
 import { calcBPM } from '../calculations';
 import {
+  BpmInfo,
   Card,
   Playlist,
   RunDetailsBlock,
   StrideDetailsBlock,
   SubmitButton,
 } from '../components';
-import { BpmBlock } from '../components/bpmBlock';
 import {
   SpotifyAudioFeatures,
   SpotifyPlaylist,
@@ -41,6 +41,7 @@ function Home({ code }: HomeProps) {
   const [stride, setStride] = useState<number>(0);
   const [bpm, setBPM] = useState<number>(-1);
   const [bpmOverride, setBPMOverride] = useState<number>(-1);
+  const [bpmInputValue, setBPMInputValue] = useState<string>('');
 
   if (!accessToken && code) {
     loginWithSpotify(code);
@@ -110,12 +111,16 @@ function Home({ code }: HomeProps) {
 
   function calcStrideSync() {
     const calcBpm = calcBPM(pace, stride);
-    setBPM(calcBpm);
-    setBPMOverride(calcBpm);
+    if (isFinite(calcBpm)) {
+      setBPM(calcBpm);
+      setBPMOverride(calcBpm);
+      setBPMInputValue('');
+    }
   }
 
   const handleOverride = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    setBPMInputValue(value);
     const valueNum = parseFloat(value);
     if (isFinite(valueNum)) {
       setBPMOverride(valueNum);
@@ -157,7 +162,6 @@ function Home({ code }: HomeProps) {
                   selectedPlaylist === playlist ? 'bg-primary' : ''
                 }`}
               >
-                {/* TODO: make into component */}
                 <input
                   type="radio"
                   id={`playlist-${index}`}
@@ -179,19 +183,16 @@ function Home({ code }: HomeProps) {
             ))}
           </div>
         </Card>
-        <div className="flex w-1/2 flex-col items-center gap-4">
+        <div className="flex w-1/2 flex-col items-start gap-4">
           <RunDetailsBlock paceValue={handlePaceChange} />
           <StrideDetailsBlock strideValue={handleStrideChange} />
-          <SubmitButton onClick={() => calcStrideSync()}>
-            Calculate BPM
-          </SubmitButton>
-          {bpm !== -1 && isFinite(bpm) && (
-            <BpmBlock
-              bpm={bpm}
-              onChange={handleOverride}
-              onClick={exportPlaylist}
-            />
-          )}
+          <BpmInfo
+            onClick={() => calcStrideSync()}
+            bpm={bpm}
+            onChange={handleOverride}
+            value={bpmInputValue}
+          />
+          <SubmitButton onClick={exportPlaylist}>Export Playlist</SubmitButton>
         </div>
       </div>
     </div>
