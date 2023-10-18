@@ -24,8 +24,12 @@ import {
   SpotifyProfile,
 } from '../types/SpotifyAPI';
 
-function Home() {
-  const { accessToken } = useContext(UserTokenContext);
+interface HomeProps {
+  code?: string | null;
+}
+
+function Home({ code }: HomeProps) {
+  const { loginWithSpotify, accessToken } = useContext(UserTokenContext);
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
   const [selectedPlaylist, setSelectedPlaylist] = useState<SpotifyPlaylist>();
@@ -37,6 +41,10 @@ function Home() {
   const [stride, setStride] = useState<number>(0);
   const [bpm, setBPM] = useState<number>(-1);
   const [bpmOverride, setBPMOverride] = useState<number>(-1);
+
+  if (!accessToken && code) {
+    loginWithSpotify(code);
+  }
 
   useEffect(() => {
     async function fetchData() {

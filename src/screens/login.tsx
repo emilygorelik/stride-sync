@@ -1,14 +1,14 @@
 import { useContext } from 'react';
 import { UserTokenContext } from '../api';
 import { Card, SubmitButton } from '../components';
-import Callback from './callback';
+import Home from './home';
 
 function Login() {
   const { loginWithSpotify } = useContext(UserTokenContext);
   let params = new URL(document.location as any).searchParams;
 
   if (params.get('code')) {
-    return <Callback code={params.get('code')} />;
+    return <Home code={params.get('code')} />;
   }
 
   return (
