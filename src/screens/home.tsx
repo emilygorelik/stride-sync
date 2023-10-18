@@ -10,8 +10,8 @@ import {
 } from '../api';
 import { calcBPM } from '../calculations';
 import {
+  BpmInfo,
   Card,
-  NumberInput,
   Playlist,
   RunDetailsBlock,
   StrideDetailsBlock,
@@ -162,7 +162,6 @@ function Home({ code }: HomeProps) {
                   selectedPlaylist === playlist ? 'bg-primary' : ''
                 }`}
               >
-                {/* TODO: make into component */}
                 <input
                   type="radio"
                   id={`playlist-${index}`}
@@ -187,23 +186,12 @@ function Home({ code }: HomeProps) {
         <div className="flex w-1/2 flex-col items-start gap-4">
           <RunDetailsBlock paceValue={handlePaceChange} />
           <StrideDetailsBlock strideValue={handleStrideChange} />
-          <div className="flex w-full items-center gap-2">
-            <SubmitButton onClick={() => calcStrideSync()}>
-              Calculate BPM
-            </SubmitButton>
-            {bpm !== -1 && isFinite(bpm) && (
-              <h3>Your Calculated BPM is {bpm}</h3>
-            )}
-          </div>
-
-          <div className="flex w-full items-center gap-4 rounded-lg border-[1px] border-primary pl-2 pt-2">
-            <h3>Override Calculated BPM:</h3>
-            <NumberInput
-              placeholder={bpm !== -1 && isFinite(bpm) ? bpm.toString() : ''}
-              onChange={handleOverride}
-              value={bpmInputValue} // Use bpmInputValue as the input value
-            />
-          </div>
+          <BpmInfo
+            onClick={() => calcStrideSync()}
+            bpm={bpm}
+            onChange={handleOverride}
+            value={bpmInputValue}
+          />
           <SubmitButton onClick={exportPlaylist}>Export Playlist</SubmitButton>
         </div>
       </div>
