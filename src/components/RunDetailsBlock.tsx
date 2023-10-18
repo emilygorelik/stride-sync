@@ -15,17 +15,14 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
   const [isSecondHalfActive, setIsSecondHalfActive] = useState(true);
 
   const handlePaceInput = (value: number) => {
-    // console.log('pace input: ', value);
     paceCalculation(value, paceUnit);
   };
 
   const handlePaceUnit = (unit: string) => {
-    // console.log('stride unit: ', unit);
     paceCalculation(pace, unit);
   };
 
   const paceCalculation = (value: number, unit: string) => {
-    // console.log('logged info is: ', value, ' ', unit);
     if (unit === 'mile') {
       paceValue(value);
     } else {
@@ -38,17 +35,14 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
   const handleDistanceInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     const valueNum = parseFloat(value);
-    // console.log('dist input: ', valueNum);
     distTimeCalculation(valueNum, distanceUnit, time);
   };
 
   const handleDistanceUnit = (unit: string) => {
-    // console.log('dist unit: ', unit);
     distTimeCalculation(distance, unit, time);
   };
 
   const handleTimeInput = (value: number) => {
-    // console.log('time input: ', value);
     distTimeCalculation(distance, distanceUnit, value);
   };
 
@@ -57,11 +51,9 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
     unit: string,
     timeValue: number,
   ) => {
-    // console.log('logged info is: ', distValue, ' ', unit, ' ', timeValue);
     if (unit === 'miles') {
       paceValue(timeValue / distValue);
     } else {
-      // console.log(distValue, ' km is ', toMiles(distValue), ' miles');
       paceValue(timeValue / toMiles(distValue));
     }
     setDistance(distValue);
@@ -73,10 +65,8 @@ export function RunDetailsBlock({ paceValue }: RunDetailsBlockProps) {
     setIsSecondHalfActive(!isSecondHalfActive);
 
     if (isSecondHalfActive) {
-      // console.log('toggled to: ', pace);
       paceCalculation(pace, paceUnit);
     } else {
-      // console.log('toggled to: ', distance, ' ', time);
       distTimeCalculation(distance, distanceUnit, time);
     }
   };

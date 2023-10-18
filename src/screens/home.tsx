@@ -25,7 +25,6 @@ import {
 } from '../types/SpotifyAPI';
 
 function Home() {
-  // const navigate = useNavigate();
   const { accessToken } = useContext(UserTokenContext);
   const [profile, setProfile] = useState<SpotifyProfile>();
   const [playlists, setPlaylists] = useState<SpotifyPlaylists>();
@@ -51,9 +50,6 @@ function Home() {
           console.error('Error fetching user data:', error);
         }
       }
-      // else {
-      //   navigate('/');
-      // }
     }
 
     fetchData();
@@ -82,7 +78,6 @@ function Home() {
           offset += playlistChunk.length;
         }
         setPlaylistFeatures(allSongsFeatures);
-        console.log(allSongsFeatures);
       }
     }
 
@@ -90,7 +85,7 @@ function Home() {
   }, [selectedPlaylist]);
 
   if (!profile || !playlists) {
-    return <div>Loading...</div>;
+    return <div>Does not have Spotify info yet. Be patient</div>;
   }
 
   const handlePlaylistSelection = (playlist: SpotifyPlaylist) => {
@@ -106,13 +101,7 @@ function Home() {
   };
 
   function calcStrideSync() {
-    // console.log('----------------------------------------------------');
-    // console.log('button clicked');
-    // console.log('recorded pace: ', pace, 'seconds per mile');
-    // console.log('recorded pace: ', pace / 60, 'minutes per mile');
-    // console.log('recorded stride: ', stride, ' inches');
     const calcBpm = calcBPM(pace, stride);
-    // console.log('calculated BPM: ', calcBpm, ' steps per minute');
     setBPM(calcBpm);
     setBPMOverride(calcBpm);
   }
@@ -135,17 +124,14 @@ function Home() {
         profile.id,
         `StrideSync- ${bpmOverride} BPM`,
       );
-      //console.log(newPlaylist.name, ' ', newPlaylist.id);
 
       const filteredSongs = playlistFeatures
         .filter((feature) => Math.abs(feature.tempo - bpmOverride) <= 3)
         .map((feature) => feature.uri);
 
-      console.log(filteredSongs);
-
       // add stored playlist to new playlist
       await addSongs(accessToken, newPlaylist.id, filteredSongs);
-      //add cover image
+      // TODO: add cover image
     }
   }
 
