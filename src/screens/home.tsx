@@ -11,12 +11,12 @@ import {
 import { calcBPM } from '../calculations';
 import {
   Card,
+  NumberInput,
   Playlist,
   RunDetailsBlock,
   StrideDetailsBlock,
   SubmitButton,
 } from '../components';
-import { BpmBlock } from '../components/bpmBlock';
 import {
   SpotifyAudioFeatures,
   SpotifyPlaylist,
@@ -41,6 +41,7 @@ function Home({ code }: HomeProps) {
   const [stride, setStride] = useState<number>(0);
   const [bpm, setBPM] = useState<number>(-1);
   const [bpmOverride, setBPMOverride] = useState<number>(-1);
+  const [bpmInputValue, setBPMInputValue] = useState<string>('');
 
   if (!accessToken && code) {
     loginWithSpotify(code);
@@ -110,12 +111,16 @@ function Home({ code }: HomeProps) {
 
   function calcStrideSync() {
     const calcBpm = calcBPM(pace, stride);
-    setBPM(calcBpm);
-    setBPMOverride(calcBpm);
+    if (isFinite(calcBpm)) {
+      setBPM(calcBpm);
+      setBPMOverride(calcBpm);
+      setBPMInputValue('');
+    }
   }
 
   const handleOverride = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    setBPMInputValue(value);
     const valueNum = parseFloat(value);
     if (isFinite(valueNum)) {
       setBPMOverride(valueNum);
@@ -179,19 +184,27 @@ function Home({ code }: HomeProps) {
             ))}
           </div>
         </Card>
-        <div className="flex w-1/2 flex-col items-center gap-4">
+        <div className="flex w-1/2 flex-col items-start gap-4">
           <RunDetailsBlock paceValue={handlePaceChange} />
           <StrideDetailsBlock strideValue={handleStrideChange} />
-          <SubmitButton onClick={() => calcStrideSync()}>
-            Calculate BPM
-          </SubmitButton>
-          {bpm !== -1 && isFinite(bpm) && (
-            <BpmBlock
-              bpm={bpm}
+          <div className="flex w-full items-center gap-2">
+            <SubmitButton onClick={() => calcStrideSync()}>
+              Calculate BPM
+            </SubmitButton>
+            {bpm !== -1 && isFinite(bpm) && (
+              <h3>Your Calculated BPM is {bpm}</h3>
+            )}
+          </div>
+
+          <div className="flex w-full items-center gap-4 rounded-lg border-[1px] border-primary pl-2 pt-2">
+            <h3>Override Calculated BPM:</h3>
+            <NumberInput
+              placeholder={bpm !== -1 && isFinite(bpm) ? bpm.toString() : ''}
               onChange={handleOverride}
-              onClick={exportPlaylist}
+              value={bpmInputValue} // Use bpmInputValue as the input value
             />
-          )}
+          </div>
+          <SubmitButton onClick={exportPlaylist}>Export Playlist</SubmitButton>
         </div>
       </div>
     </div>
