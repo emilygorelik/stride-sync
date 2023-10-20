@@ -12,7 +12,7 @@ export default {
   daisyui: {
     themes: [
       {
-        mytheme: {
+        purple: {
           primary: '#DDA0F5',
           neutral: '#161a1d',
           'base-100': '#482b4a',
@@ -22,6 +22,19 @@ export default {
           error: '#fb3c69',
         },
       },
+      {
+        blue: {
+          primary: '#A0F5D4',
+          neutral: '#161a1d',
+          'base-100': '#2B394A',
+          info: '#5ba8ec',
+          success: '#189084',
+          warning: '#ee8d17',
+          error: '#fb3c69',
+        },
+      },
+      'valentine',
+      'dracula',
     ],
   },
   plugins: [require('daisyui')],
