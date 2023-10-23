@@ -7,7 +7,7 @@ import {
   SpotifyTrack,
 } from './types/SpotifyAPI';
 
-const isProd = true;
+const isProd = false;
 let redirectURL = '';
 
 if (isProd) redirectURL = 'https://emgore-jg.github.io/stride-sync';
