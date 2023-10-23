@@ -1,5 +1,4 @@
-import { useContext, useEffect } from 'react';
-import { themeChange } from 'theme-change';
+import { useContext } from 'react';
 import { UserTokenContext } from '../api';
 import { Card, SubmitButton } from '../components';
 import Home from './home';
@@ -12,22 +11,10 @@ function Login() {
     return <Home code={params.get('code')} />;
   }
 
-  useEffect(() => {
-    themeChange(false);
-  }, []);
-
   return (
     <div className="flex h-screen items-center justify-between overflow-hidden">
       <div className="flex h-[200%] w-1/2 flex-col justify-center rounded-r-[100%] bg-primary p-32 text-black">
         <h1>What is StrideSync?</h1>
-        <select name="" id="" data-choose-theme>
-          <option value="blue" key="blue">
-            blue
-          </option>
-          <option value="purple" key="purple">
-            purple
-          </option>
-        </select>
         <p className="mb-2">
           StrideSync is a unique running companion that helps you optimize your
           playlist based on your running pace and stride length. Here's how it
