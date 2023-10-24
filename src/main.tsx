@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { UserTokenProvider } from './api';
 import './index.css';
 import Login from './screens/login';
+import { ThemeProvider } from './theme';
 
 const queryClient = new QueryClient();
 
@@ -11,7 +12,9 @@ ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <UserTokenProvider>
-        <Login />
+        <ThemeProvider>
+          <Login />
+        </ThemeProvider>
       </UserTokenProvider>
     </QueryClientProvider>
   </React.StrictMode>,
