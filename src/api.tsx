@@ -10,7 +10,7 @@ import {
 const isProd = false;
 let redirectURL = '';
 
-if (isProd) redirectURL = 'https://emgore-jg.github.io/stride-sync';
+if (isProd) redirectURL = 'https://emilygorelik.github.io/stride-sync';
 else redirectURL = 'http://localhost:5173';
 
 export async function redirectToAuthCodeFlow(clientId: string) {
